@@ -6,6 +6,7 @@ import PopularCategories from "./components/PopularCategories";
 import Sales from "./components/Sales";
 import Catalog from "./components/Catalog";
 import User from "./components/User";
+import SignInPage from "./components/SignInPage";
 import "./index.css";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
@@ -43,6 +44,14 @@ function App() {
               <Navbar />
               <User />
               <Footer />
+            </>
+          }
+        />
+        <Route
+          path="/SignIn"
+          element={
+            <>
+              <SignInPage />
             </>
           }
         />
