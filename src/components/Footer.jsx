@@ -1,6 +1,6 @@
 const Footer = () => {
   return (
-    <div className=" w-[87%] m-auto">
+    <footer className=" w-[87%] m-auto">
       <div className="flex justify-between mt-20 mb-20 text-[25px] font-thin text-gray-400">
         <div className="flex-col">
           <b className="text-black">Покупателям </b>
@@ -24,7 +24,9 @@ const Footer = () => {
         </div>
         <div className="flex-col">
           <b className="text-black">Наши контакты</b>
-          <p>support@stroycity.ru</p>
+          <p>
+            <a href="mailto:support@stroycity.ru">support@stroycity.ru</a>
+          </p>
         </div>
       </div>
       <hr className="border-gray-400 my-4" />
@@ -33,7 +35,7 @@ const Footer = () => {
         <p>Политика конфиденциальности</p>
         <p>Разработка сайта</p>
       </div>
-    </div>
+    </footer>
   );
 };
 

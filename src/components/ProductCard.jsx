@@ -20,7 +20,7 @@ const ProductCard = () => {
         <div className="opacity-50">/1м²</div>
       </div>
       <div className="flex items-center justify-between flex-row gap-4">
-        <div className="flex items-center border-2 border-[#dfdfdf] w-full max-w-[180px] justify-around ">
+        <div className="flex items-center border-2 border-[#dfdfdf] w-full max-w-[180px] justify-around transition-colors hover:bg-gray-100">
           <button
             className="text-[30px] mt-[-3px]"
             onClick={() => setQuantity(Math.max(quantity - 1, 0))} // Prevent going below 0

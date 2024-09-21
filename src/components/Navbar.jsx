@@ -3,24 +3,43 @@ import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import { faHeart } from "@fortawesome/free-regular-svg-icons";
 import { faCartShopping } from "@fortawesome/free-solid-svg-icons";
 import { faUser } from "@fortawesome/free-regular-svg-icons";
+import { useEffect } from "react";
+import { Link, useLocation } from "react-router-dom";
 
 const Navbar = () => {
+  useEffect(() => {
+    var Tawk_API = Tawk_API || {},
+      Tawk_LoadStart = new Date();
+    (function () {
+      var s1 = document.createElement("script"),
+        s0 = document.getElementsByTagName("script")[0];
+      s1.async = true;
+      s1.src = "https://embed.tawk.to/66edd5d3e5982d6c7bb1e780/1i88gmgs6";
+      s1.charset = "UTF-8";
+      s1.setAttribute("crossorigin", "*");
+      s0.parentNode.insertBefore(s1, s0);
+    })();
+  }, []);
+
   return (
-    <div>
+    <nav>
       <div className="w-full h-[100px] bg-white flex items-center justify-between border border-[#cacaca] ">
         {" "}
         {/* Added border here */}
-        <div className="flex items-center gap-3">
+        <Link to="/" className="flex items-center gap-3">
           {" "}
           {/* Added border here */}
-          <div className="w-[45px] h-[45px] bg-gray-400"></div>
-          <div className="text-[#ff8800] text-[30px] sm:text-[40px] md:text-[50px] font-bold border-r border-[#cacaca] h-[100px] flex items-center">
+          <div className="w-[45px] h-[45px] bg-gray-400 ml-10"></div>
+          <div className="text-[#ff8800] text-[30px] sm:text-[40px] md:text-[50px] font-bold border-[#cacaca] h-[100px] flex items-center">
             Строй сити
           </div>
-        </div>
-        <div className="text-[#ff8800] text-[18px] sm:text-[25px] font-bold border-r border-[#cacaca] h-full flex items-center">
+        </Link>
+        <Link
+          to="/catalog"
+          className="text-[#ff8800] text-[18px] sm:text-[25px] font-bold border-r border-l px-20 border-[#cacaca] h-full flex items-center "
+        >
           Каталог товаров
-        </div>
+        </Link>
         <div className="hidden lg:flex space-x-8">
           <a className="text-[#363636] text-sm sm:text-base md:text-lg lg:text-xl font-medium hover:text-[#ff8800] transition duration-300">
             Доставка и оплата
@@ -38,21 +57,35 @@ const Navbar = () => {
             icon={faMagnifyingGlass}
             className="size-[20px] border-l border-[#cacaca] h-[100px] px-10 hover:text-[#ff8800] transition duration-300"
           />
-          <FontAwesomeIcon
-            icon={faHeart}
-            className="size-[20px] border-l border-[#cacaca] h-[100px] px-10 hover:text-[#ff8800] transition duration-300"
-          />
-          <FontAwesomeIcon
-            icon={faCartShopping}
-            className="size-[20px] border-l border-[#cacaca] h-[100px] px-10 hover:text-[#ff8800] transition duration-300"
-          />
-          <FontAwesomeIcon
-            icon={faUser}
-            className="size-[20px] border-l border-[#cacaca] h-[100px] px-10 hover:text-[#ff8800] transition duration-300"
-          />
+          <div className="relative">
+            <FontAwesomeIcon
+              icon={faHeart}
+              className="size-[20px] border-l border-[#cacaca] h-[100px] px-10 hover:text-[#ff8800] transition duration-300"
+            />
+            <div className="w-4 h-4 rounded-full bg-[#FF8900] absolute top-12 left-[52px]"></div>
+            <div className="text-[13px] absolute top-[46px] left-[56.3px]">
+              0
+            </div>
+          </div>
+          <div className="relative">
+            <FontAwesomeIcon
+              icon={faCartShopping}
+              className="size-[20px] border-l border-[#cacaca] h-[100px] px-10 hover:text-[#ff8800] transition duration-300"
+            />
+            <div className="w-4 h-4 rounded-full bg-[#FF8900] absolute top-12 left-[52px]"></div>
+            <div className="text-[13px] absolute top-[46px] left-[56.3px]">
+              0
+            </div>
+          </div>
+          <Link to="/user">
+            <FontAwesomeIcon
+              icon={faUser}
+              className="size-[20px] border-l border-[#cacaca] h-[100px] px-10 hover:text-[#ff8800] transition duration-300"
+            />
+          </Link>
         </div>
       </div>
-    </div>
+    </nav>
   );
 };
 export default Navbar;
