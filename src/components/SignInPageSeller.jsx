@@ -1,17 +1,15 @@
 import React, { useState } from "react";
 import axios from 'axios';
-import toastr from 'toastr';
-import 'toastr/build/toastr.min.css';
 
 const AuthPage = () => {
-  const [name, setName] = useState("");
+  const [companyName, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isSignUp, setIsSignUp] = useState(false);
 
-  const handleNameChange = (e) => {
-    setName(e.target.value);
-  };
+const handleNameChange = (e) => {
+  setName(e.target.value);
+};
 
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
@@ -21,39 +19,27 @@ const AuthPage = () => {
     setPassword(e.target.value);
   };
 
+
   const handleSubmit = async (e) => {
-    e.preventDefault(); // Prevent form from refreshing the page on submit
-    
+    e.preventDefault(); // Prevent default form submission
+  
     const userData = {
       email,
       password,
-      name
+      companyName
     };
   
     try {
-      const response = await axios.post('http://api.bigbolts.ru/sign_up/buyer', userData, {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-  
-      if (response.status === 200) {
-        // Handle successful response
-        toastr.success('User data sent successfully');
-        console.log('User data sent successfully');
-        // You might want to redirect the user or update the UI here
-      } else {
-        // Handle error response
-        toastr.error('Failed to send user data');
-        console.error('Failed to send user data');
-      }
+      const response = await axios.post('http://api.bigbolts.ru/sign_up/buyer', userData);
+      console.log('Response:', response.data);
+      toastr.success('Sign up successful!');
+      // Handle successful sign up (e.g., redirect, update state, etc.)
     } catch (error) {
-      // Handle network or server error
-      toastr.error('Error: ' + error.message);
-      console.error('Error:', error);
+      console.error('Error:', error.response ? error.response.data : error.message);
+      toastr.error('Sign up failed. Please try again.');
+      // Handle error (e.g., show error message to user)
     }
   };
-
   const toggleSignUp = () => {
     setIsSignUp(!isSignUp);
   };
@@ -71,8 +57,8 @@ const AuthPage = () => {
             </label>
             <input
               type="text"
-              id="name"
-              value={name}
+              id="companyName"
+              value={companyName}
               onChange={handleNameChange}
               className="w-full border border-gray-300 rounded-md px-3 py-2"
               required
@@ -126,5 +112,4 @@ const AuthPage = () => {
     </div>
   );
 };
-
 export default AuthPage;

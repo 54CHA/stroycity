@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 const User = () => {
   const user = {
     name: "Имя",
@@ -18,6 +20,7 @@ const User = () => {
               <b>+7 {user.phone}</b>
             </h1>
             <a className="underline">Выйти</a>
+            <Link to="/Admin"><div>Admin</div></Link>
           </div>
         </div>
       </div>
