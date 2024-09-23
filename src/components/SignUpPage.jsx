@@ -1,13 +1,14 @@
 import React, { useState } from "react";
 import axios from 'axios';
 import toastr from 'toastr';
+import { Link } from "react-router-dom";
 import 'toastr/build/toastr.min.css';
 
 const AuthPage = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [isSignUp, setIsSignUp] = useState(false);
+
 
   const handleNameChange = (e) => {
     setName(e.target.value);
@@ -31,7 +32,7 @@ const AuthPage = () => {
     };
   
     try {
-      const response = await axios.post('http://api.bigbolts.ru/sign_in/seller', userData, {
+      const response = await axios.post('http://api.bigbolts.ru/sign_up/buyer', userData, {
         headers: {
           'Content-Type': 'application/json',
         },
@@ -54,15 +55,11 @@ const AuthPage = () => {
     }
   };
 
-  const toggleSignUp = () => {
-    setIsSignUp(!isSignUp);
-  };
-
   return (
     <div className="flex justify-center items-center h-screen">
       <div className="bg-white p-8 rounded-lg shadow-md">
         <h2 className="text-2xl font-bold mb-6">
-          {isSignUp ? "Регистрация" : "Войти"}
+          {"Регистрация"}
         </h2>
         <form onSubmit={handleSubmit}>
           <div className="mb-6">
@@ -108,23 +105,15 @@ const AuthPage = () => {
             type="submit"
             className="bg-[#ff8800] text-white px-4 py-2 rounded-md transition-all hover:bg-[#ff5500]"
           >
-            {isSignUp ? "Зарегистрироваться" : "Войти"}
+            {"Зарегистрироваться"}
           </button>
+          <Link to="/SignIn">Нет аккаунта? </Link>
         </form>
-        <div className="mt-4 text-center">
-          <span className="text-gray-600">
-            {isSignUp ? "Уже есть аккаунт?" : "Нет аккаунта?"}
-          </span>
-          <button
-            onClick={toggleSignUp}
-            className="text-[#ff8800] hover:text-[#ff5500]"
-          >
-            {isSignUp ? "Войти" : "Зарегистрироваться"}
-          </button>
-        </div>
+          
       </div>
     </div>
   );
 };
 
 export default AuthPage;
+

@@ -31,7 +31,7 @@ const AuthPage = () => {
     };
   
     try {
-      const response = await axios.post('http://api.bigbolts.ru/sign_up/buyer', userData, {
+      const response = await axios.post('http://api.bigbolts.ru/sign_in/buyer', userData, {
         headers: {
           'Content-Type': 'application/json',
         },

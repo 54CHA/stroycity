@@ -4,6 +4,8 @@ import toastr from 'toastr';
 import 'toastr/build/toastr.min.css';
 
 const AuthPage = () => {
+  
+  const [shop_name, setStoreName] = useState("");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -21,17 +23,22 @@ const AuthPage = () => {
     setPassword(e.target.value);
   };
 
+  const handleStoreNameChange = (e) => {
+    setStoreName(e.target.value);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault(); // Prevent form from refreshing the page on submit
     
     const userData = {
       email,
       password,
-      name
+      name,
+      shop_name
     };
   
     try {
-      const response = await axios.post('http://api.bigbolts.ru/sign_in/seller', userData, {
+      const response = await axios.post('http://api.bigbolts.ru/sign_up/seller', userData, {
         headers: {
           'Content-Type': 'application/json',
         },
@@ -65,6 +72,19 @@ const AuthPage = () => {
           {isSignUp ? "Регистрация" : "Войти"}
         </h2>
         <form onSubmit={handleSubmit}>
+        <div className="mb-6">
+            <label htmlFor="name" className="block mb-2">
+              Название магазина
+            </label>
+            <input
+              type="text"
+              id="storeName"
+              value={shop_name}
+              onChange={handleStoreNameChange}
+              className="w-full border border-gray-300 rounded-md px-3 py-2"
+              required
+            />
+          </div>
           <div className="mb-6">
             <label htmlFor="name" className="block mb-2">
               Имя
