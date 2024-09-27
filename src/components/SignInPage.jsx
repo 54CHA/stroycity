@@ -1,13 +1,15 @@
 import React, { useState } from "react";
-import axios from 'axios';
-import toastr from 'toastr';
-import 'toastr/build/toastr.min.css';
+import axios from "axios";
+import toastr from "toastr";
+import { Link, useNavigate } from "react-router-dom";
+import "toastr/build/toastr.min.css";
 
 const AuthPage = () => {
+  const navigate = useNavigate();
+
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [isSignUp, setIsSignUp] = useState(false);
 
   const handleNameChange = (e) => {
     setName(e.target.value);
@@ -23,47 +25,50 @@ const AuthPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault(); // Prevent form from refreshing the page on submit
-    
+
     const userData = {
       email,
       password,
-      name
+      name,
     };
-  
+
     try {
-      const response = await axios.post('http://api.bigbolts.ru/sign_in/buyer', userData, {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-  
+      const response = await axios.post(
+        "http://api.bigbolts.ru/sign_in/buyer",
+        userData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
       if (response.status === 200) {
         // Handle successful response
-        toastr.success('User data sent successfully');
-        console.log('User data sent successfully');
+        toastr.success("User data sent successfully");
+        console.log("User data sent successfully");
+        const token = response.data.token; // Assuming the token is returned in the 'token' field
+
+        // Store the token in a cookie
+        document.cookie = `jwt=${token}; path=/; secure; samesite=strict`;
         // You might want to redirect the user or update the UI here
       } else {
         // Handle error response
-        toastr.error('Failed to send user data');
-        console.error('Failed to send user data');
+        toastr.error("Failed to send user data");
+        console.error("Failed to send user data");
       }
+      navigate("/"); // Redirect to the home page or any other desired page
     } catch (error) {
       // Handle network or server error
-      toastr.error('Error: ' + error.message);
-      console.error('Error:', error);
+      toastr.error("Error: " + error.message);
+      console.error("Error:", error);
     }
-  };
-
-  const toggleSignUp = () => {
-    setIsSignUp(!isSignUp);
   };
 
   return (
     <div className="flex justify-center items-center h-screen">
-      <div className="bg-white p-8 rounded-lg shadow-md">
-        <h2 className="text-2xl font-bold mb-6">
-          {isSignUp ? "Регистрация" : "Войти"}
-        </h2>
+      <div className="bg-white p-8 rounded-lg shadow-md w-[15%]">
+        <h2 className="text-2xl font-bold mb-6">{"Войти"}</h2>
         <form onSubmit={handleSubmit}>
           <div className="mb-6">
             <label htmlFor="name" className="block mb-2">
@@ -104,24 +109,22 @@ const AuthPage = () => {
               required
             />
           </div>
-          <button
-            type="submit"
-            className="bg-[#ff8800] text-white px-4 py-2 rounded-md transition-all hover:bg-[#ff5500]"
-          >
-            {isSignUp ? "Зарегистрироваться" : "Войти"}
-          </button>
+
+          <div className="flex flex-col">
+            <button
+              type="submit"
+              className="bg-[#ff8800] text-white px-4 py-2 rounded-md transition-all hover:bg-[#ff5500] w-full"
+            >
+              {"Войти"}
+            </button>
+            <p className="m-auto mt-1">
+              Нет аккаунта?
+              <Link to="/SignUp" className=" text-[#ff8800] mx-1">
+                Зарегистрироваться
+              </Link>
+            </p>
+          </div>
         </form>
-        <div className="mt-4 text-center">
-          <span className="text-gray-600">
-            {isSignUp ? "Уже есть аккаунт?" : "Нет аккаунта?"}
-          </span>
-          <button
-            onClick={toggleSignUp}
-            className="text-[#ff8800] hover:text-[#ff5500]"
-          >
-            {isSignUp ? "Войти" : "Зарегистрироваться"}
-          </button>
-        </div>
       </div>
     </div>
   );

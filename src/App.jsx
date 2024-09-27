@@ -7,15 +7,16 @@ import Sales from "./components/Sales";
 import Catalog from "./components/Catalog";
 import User from "./components/User";
 import SignInPage from "./components/SignInPage";
-import SignUpPage from "./components/SignupPage";
+import SignUpPage from "./components/SignUpPage";
 import SignInPageSeller from "./components/SignInPageSeller";
 import SignUpSeller from "./components/SignUpSeller";
+import ProtectedRoute from "./components/ProtectedRoute";
 import "./index.css";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Admin from "./components/Admin";
-import CreateProduct from "./components/CreateProduct";   
-import toastr from 'toastr';
-import 'toastr/build/toastr.min.css';
+import CreateProduct from "./components/CreateProduct";
+import toastr from "toastr";
+import "toastr/build/toastr.min.css";
 
 function App() {
   return (
@@ -44,17 +45,20 @@ function App() {
             </>
           }
         />
+        <Route element={<ProtectedRoute />}>
+          <Route
+            path="/user"
+            element={
+              <>
+                <Navbar />
+                <User />
+                <Footer />
+              </>
+            }
+          />
+        </Route>
+
         <Route
-          path="/user"
-          element={
-            <>
-              <Navbar />
-              <User />
-              <Footer />
-            </>
-          }
-        />
-         <Route
           path="/SignIn"
           element={
             <>
@@ -78,7 +82,7 @@ function App() {
             </>
           }
         />
-         <Route
+        <Route
           path="/SignUpSeller"
           element={
             <>
@@ -96,12 +100,12 @@ function App() {
             </>
           }
         />
-         <Route
+        <Route
           path="/CreateProduct"
           element={
             <>
               <Navbar />
-              <CreateProduct/>
+              <CreateProduct />
               <Footer />
             </>
           }
