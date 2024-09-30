@@ -2,11 +2,12 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faBars,
   faMagnifyingGlass,
-  faHeart,
   faCartShopping,
-  faUser,
 } from "@fortawesome/free-solid-svg-icons";
-import { faUser as faUserRegular } from "@fortawesome/free-regular-svg-icons";
+import {
+  faUser as faUserRegular,
+  faHeart,
+} from "@fortawesome/free-regular-svg-icons";
 import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 
@@ -30,56 +31,90 @@ const Navbar = () => {
   return (
     <nav>
       <div className="w-full h-[100px] bg-white flex items-center justify-between border border-[#cacaca]">
-        <div className="flex items-center">
-          <Link to="/" className="flex items-center gap-3">
-            <img src="./logo.png" alt="logo" className="w-[50px] ml-10" />
-            <div className="text-[#ff8800] text-[30px] sm:text-[40px] md:text-[50px] font-bold border-[#cacaca] h-[100px] flex items-center">
-              СТРОЙ СИТИ
-            </div>
-          </Link>
-        </div>
-        <div className="flex items-center border-l border-r border-[#cacaca] h-full align-">
-          <div
-            className=" cursor-pointer items-center flex"
-            onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-          >
-            <FontAwesomeIcon
-              icon={faBars}
-              className="size-[20px] h-[100px] pl-10 text-[#ff8800] transition duration-300"
-            />
+        <div className="flex">
+          <div className="flex items-center">
+            <Link to="/" className="flex items-center gap-3">
+              <img
+                src="/src/assets/logo.png"
+                alt="logo"
+                className="w-[50px] ml-10"
+              />
+              <div className="text-[#ff8800] text-[30px] sm:text-[40px] md:text-[50px] font-bold border-[#cacaca] h-[100px] flex items-center mr-10">
+                СТРОЙ СИТИ
+              </div>
+            </Link>
           </div>
-          {isDropdownOpen && (
-            <div className="absolute top-[100px] left-0 bg-white border border-[#cacaca] p-4">
-              <Link to="/" className="block py-2 hover:text-[#ff8800]">
-                Главная
-              </Link>
-              <Link to="/about" className="block py-2 hover:text-[#ff8800]">
-                О компании
-              </Link>
-              <Link to="/contact" className="block py-2 hover:text-[#ff8800]">
-                Контакты
-              </Link>
+          <div className="flex items-center border-l border-r border-[#cacaca] h-full align-">
+            <div
+              className=" cursor-pointer items-center flex"
+              onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+            >
+              <FontAwesomeIcon
+                icon={faBars}
+                className="size-[20px] h-[100px] pl-10 text-[#ff8800] transition duration-300"
+              />
             </div>
-          )}
-          <Link
-            to="/catalog"
-            className="text-[#ff8800] text-[18px] sm:text-[25px] font-bold pr-10 pl-5 h-full flex items-center"
-          >
-            Каталог товаров
-          </Link>
+            {isDropdownOpen && (
+              <div className="absolute top-[100px] left-[24%] bg-white border border-[#cacaca] z-10 text-[14px] sm:text-[20px] p-8">
+                <Link
+                  to="/catalog"
+                  className="block py-2 hover:text-[#ff8800] pb-4"
+                >
+                  Весь Каталог
+                </Link>
+                <Link
+                  to="/catalog/materials"
+                  className="block py-2 hover:text-[#ff8800] pb-4"
+                >
+                  Материалы
+                </Link>
+                <Link
+                  to="/catalog/tools"
+                  className="block py-2 hover:text-[#ff8800] pb-4"
+                >
+                  Инструменты
+                </Link>
+                <Link
+                  to="/catalog/plumbing"
+                  className="block py-2 hover:text-[#ff8800] pb-4"
+                >
+                  Сантехника
+                </Link>
+                <Link
+                  to="/catalog/power_tools"
+                  className="block py-2 hover:text-[#ff8800] pb-4"
+                >
+                  Электрооборудование
+                </Link>
+              </div>
+            )}
+            <div className="text-[#ff8800] text-[18px] sm:text-[25px] font-bold pr-10 pl-5 h-full flex items-center">
+              Каталог товаров
+            </div>
+          </div>
+
+          <div className="hidden lg:flex items-center space-x-8 ml-10">
+            <Link
+              to="/DeliveryAndPayment"
+              className="text-[#363636] text-sm sm:text-base md:text-lg lg:text-lg font-medium hover:text-[#ff8800] transition duration-300"
+            >
+              Доставка и оплата
+            </Link>
+            <Link
+              to="/About"
+              className="text-[#363636] text-sm sm:text-base md:text-lg lg:text-lg font-medium hover:text-[#ff8800] transition duration-300"
+            >
+              О компании
+            </Link>
+            <Link
+              to="/FAQ"
+              className="text-[#363636] text-sm sm:text-base md:text-lg lg:text-lg font-medium hover:text-[#ff8800] transition duration-300"
+            >
+              FAQ
+            </Link>
+          </div>
         </div>
-        <div className="hidden lg:flex space-x-8">
-          <a className="text-[#363636] text-sm sm:text-base md:text-lg lg:text-xl font-medium hover:text-[#ff8800] transition duration-300">
-            Доставка и оплата
-          </a>
-          <a className="text-[#363636] text-sm sm:text-base md:text-lg lg:text-xl font-medium hover:text-[#ff8800] transition duration-300">
-            О компании
-          </a>
-          <a className="text-[#363636] text-sm sm:text-base md:text-lg lg:text-xl font-medium hover:text-[#ff8800] transition duration-300">
-            Стать продавцом
-          </a>
-        </div>
-        <div className="flex items-center justify-center">
+        <div className="flex items-center">
           <FontAwesomeIcon
             icon={faMagnifyingGlass}
             className="size-[20px] border-l border-[#cacaca] h-[100px] px-10 hover:text-[#ff8800] transition duration-300"

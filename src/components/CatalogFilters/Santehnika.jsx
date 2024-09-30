@@ -1,9 +1,9 @@
-import ProductCard from "./ProductCard";
+import ProductCard from "../ProductCard";
+import { Link, useLocation } from "react-router-dom";
 import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Link, useLocation } from "react-router-dom";
 
-const Catalog = () => {
+const Santehnika = () => {
   return (
     <div>
       <div className="bg-[#DFDFDF] pb-40 ">
@@ -14,10 +14,15 @@ const Catalog = () => {
               icon={faArrowRight}
               className="text-gray-400 mx-1"
             />{" "}
-            Каталог товаров
+            <span className="text-gray-400">Каталог товаров </span>
+            <FontAwesomeIcon
+              icon={faArrowRight}
+              className="text-gray-400 mx-1"
+            />
+            Сантехника
           </div>
           <div className="text-[#363636] text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-10 pt-10 ">
-            Каталог
+            Сантехника
           </div>
           <div className="flex gap-5 mb-10 ">
             <select className="p-1 flex shadow-md">
@@ -56,4 +61,4 @@ const Catalog = () => {
   );
 };
 
-export default Catalog;
+export default Santehnika;

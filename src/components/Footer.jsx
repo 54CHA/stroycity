@@ -8,7 +8,11 @@ const Footer = () => {
           <br />
           <b className="text-black">Продавцам </b>
           <p>Стать продавцом</p>
+          <br />
+          <b className="text-black">Курьерам </b>
+          <p>Стать курьером</p>
         </div>
+        <div className="flex-col"></div>
         <div className="flex-col">
           <b className="text-black">Каталог товаров</b>
           <p>Материалы</p>

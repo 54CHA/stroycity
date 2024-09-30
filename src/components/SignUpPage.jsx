@@ -67,7 +67,7 @@ const AuthPage = () => {
 
   return (
     <div className="flex justify-center items-center h-screen">
-      <div className="bg-white p-8 rounded-lg shadow-md w-[15%]">
+      <div className="bg-white p-8 rounded-lg shadow-md w-[20%]">
         <h2 className="text-2xl font-bold mb-6">{"Регистрация"}</h2>
         <form onSubmit={handleSubmit}>
           <div className="mb-6">
