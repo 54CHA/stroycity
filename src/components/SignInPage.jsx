@@ -34,7 +34,7 @@ const AuthPage = () => {
 
     try {
       const response = await axios.post(
-        "http://api.bigbolts.ru/sign_in/buyer",
+        "https://api.bigbolts.ru/sign_in/buyer",
         userData,
         {
           headers: {

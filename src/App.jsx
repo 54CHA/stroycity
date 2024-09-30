@@ -8,8 +8,6 @@ import Catalog from "./components/Catalog";
 import User from "./components/User";
 import SignInPage from "./components/SignInPage";
 import SignUpPage from "./components/SignUpPage";
-import SignInPageSeller from "./components/SignInPageSeller";
-import SignUpSeller from "./components/SignUpSeller";
 import ProtectedRoute from "./components/ProtectedRoute";
 import "./index.css";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
@@ -71,22 +69,6 @@ function App() {
           element={
             <>
               <SignUpPage />
-            </>
-          }
-        />
-        <Route
-          path="/SignInSeller"
-          element={
-            <>
-              <SignInPageSeller />
-            </>
-          }
-        />
-        <Route
-          path="/SignUpSeller"
-          element={
-            <>
-              <SignUpSeller />
             </>
           }
         />
