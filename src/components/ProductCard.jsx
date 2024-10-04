@@ -23,7 +23,7 @@ const ProductCard = () => {
         <div className="flex items-center border-2 border-[#dfdfdf] w-full max-w-[180px] justify-around transition-colors hover:bg-gray-100">
           <button
             className="text-[30px] mt-[-3px]"
-            onClick={() => setQuantity(Math.max(quantity - 1, 0))} // Prevent going below 0
+            onClick={() => setQuantity(Math.max(quantity - 1, 1))} // Prevent going below 0
           >
             -
           </button>

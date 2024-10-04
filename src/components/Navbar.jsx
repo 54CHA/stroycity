@@ -9,23 +9,33 @@ import {
   faHeart,
 } from "@fortawesome/free-regular-svg-icons";
 import { useEffect, useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const Navbar = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   useEffect(() => {
-    var Tawk_API = Tawk_API || {},
-      Tawk_LoadStart = new Date();
-    (function () {
-      var s1 = document.createElement("script"),
-        s0 = document.getElementsByTagName("script")[0];
+    // Load Tawk.to chat widget
+    const loadTawkTo = () => {
+      var s1 = document.createElement("script");
       s1.async = true;
       s1.src = "https://embed.tawk.to/66edd5d3e5982d6c7bb1e780/1i88gmgs6";
       s1.charset = "UTF-8";
       s1.setAttribute("crossorigin", "*");
-      s0.parentNode.insertBefore(s1, s0);
-    })();
+      document.head.appendChild(s1);
+    };
+
+    loadTawkTo();
+
+    // Cleanup function to remove the script when component unmounts
+    return () => {
+      const tawkScript = document.querySelector(
+        'script[src^="https://embed.tawk.to"]'
+      );
+      if (tawkScript) {
+        tawkScript.remove();
+      }
+    };
   }, []);
 
   return (

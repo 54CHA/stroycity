@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import axios from "axios";
 import toastr from "toastr";
 import { Link, useNavigate } from "react-router-dom";
@@ -31,10 +31,9 @@ const AuthPage = () => {
       password,
       name,
     };
-
     try {
       const response = await axios.post(
-        "https://api.bigbolts.ru/sign_in/buyer",
+        "https://api.bigbolts.ru/sign-in/buyer",
         userData,
         {
           headers: {
@@ -52,12 +51,13 @@ const AuthPage = () => {
         // Store the token in a cookie
         document.cookie = `jwt=${token}; path=/; secure; samesite=strict`;
         // You might want to redirect the user or update the UI here
+        navigate("/user");
       } else {
-        // Handle error response
+        // Handle error response  
         toastr.error("Failed to send user data");
         console.error("Failed to send user data");
       }
-      navigate("/"); // Redirect to the home page or any other desired page
+      // Redirect to the home page or any other desired page
     } catch (error) {
       // Handle network or server error
       toastr.error("Error: " + error.message);

@@ -12,9 +12,9 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import FAQ from "./components/FAQ";
 import Delivery from "./components/Delivery";
 import About from "./components/About";
+import ProductInfo from "./components/ProductInfo";
 import "./index.css";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import toastr from "toastr";
 import "toastr/build/toastr.min.css";
 import PowerTools from "./components/CatalogFilters/PowerTools";
 import Tools from "./components/CatalogFilters/Tools";
@@ -117,6 +117,17 @@ function App() {
               {" "}
               <Navbar />
               <FAQ />
+              <Footer />
+            </>
+          }
+        />
+        <Route
+          path="/Product"
+          element={
+            <>
+              {" "}
+              <Navbar />
+              <ProductInfo />
               <Footer />
             </>
           }

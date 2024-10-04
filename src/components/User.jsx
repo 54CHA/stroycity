@@ -1,26 +1,54 @@
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { faBell } from "@fortawesome/free-regular-svg-icons";
 import { faCircle, faStar } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useState } from "react";
+import axios from "axios";
+import { useState, useEffect } from "react";
 
 const User = () => {
-  const user = {
-    name: "Имя",
-    phone: "999 999-99-99",
-    avatar: "/avatar.png",
+  const apiUrl = "https://api.bigbolts.ru";
+  const navigate = useNavigate();
+  const orderStatus = ["Собран", "В пути", "Доставлен", "Отменен"];
+  const [userInfo, setUserInfo] = useState(null);
+  const [rating, setRating] = useState(0);
+
+  const fetchUserInfo = async () => {
+    try {
+      // Get the JWT token from the cookie
+      const token = document.cookie
+        .split("; ")
+        .find((row) => row.startsWith("jwt="))
+        ?.split("=")[1];
+
+      if (!token) {
+        console.error("No JWT token found");
+        navigate("/login"); // Redirect to login if no token is found
+        return;
+      }
+
+      const response = await axios.get(`${apiUrl}/buyer`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      setUserInfo(response.data);
+    } catch (error) {
+      console.error("Error fetching user info:", error);
+      if (error.response && error.response.status === 401) {
+        // Unauthorized, token might be invalid or expired
+        navigate("/login");
+      }
+    }
   };
 
-  const orderStatus = ["Собран", "В пути", "Доставлен", "Отменен"];
-
-  const navigate = useNavigate();
+  useEffect(() => {
+    fetchUserInfo();
+  }, []);
 
   function deleteToken() {
     document.cookie = "jwt=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
     navigate("/");
   }
-
-  const [rating, setRating] = useState(0);
 
   const handleStarClick = (index) => {
     setRating(index + 1);
@@ -32,19 +60,24 @@ const User = () => {
         <div className="w-[47%] h-[400px] bg-white p-6 flex flex-col justify-between">
           <div className="flex">
             <img
-              src={user.avatar}
+              src="/avatar.png"
               alt="Аватар"
               className="bg-[#DFDFDF] p-3 rounded-full"
             />
             <div className="flex w-full justify-between">
-              <h1 className="font-bold">{user.name}</h1>
+              <h1 className="font-bold">
+                {userInfo ? userInfo.name : "Loading..."}
+              </h1>
               <FontAwesomeIcon icon={faBell} className="text-[#ff8800] mt-2" />
             </div>
           </div>
           <div className="flex justify-between items-center px-4">
             <h1 className="text-[#6a6a6a] font-medium">
-              Телефон
-              <h className="text-black font-medium">+7 {user.phone}</h>
+              Почта:
+              <br />
+              <span className="text-black font-medium">
+                {userInfo ? userInfo.email : " Loading..."}
+              </span>
             </h1>
             <button
               className="underline text-[#6a6a6a] hover:text-[#ff8800] transition-all font-medium"
