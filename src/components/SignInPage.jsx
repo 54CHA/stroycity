@@ -49,7 +49,7 @@ const AuthPage = () => {
         const token = response.data.token; // Assuming the token is returned in the 'token' field
 
         // Store the token in a cookie
-        document.cookie = `jwt=${token}; path=/; secure; samesite=strict`;
+        document.cookie = `jwt=${token};SameSite=Strict; path=/; secure;`;
         // You might want to redirect the user or update the UI here
         navigate("/user");
       } else {
