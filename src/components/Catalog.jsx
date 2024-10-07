@@ -1,9 +1,34 @@
+import { useState, useEffect } from "react";
 import ProductCard from "./ProductCard";
 import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-// import { Link, useLocation } from "react-router-dom";
+import axios from "axios";
 
 const Catalog = () => {
+  const [items, setItems] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    fetchItems();
+  }, []);
+
+  const fetchItems = async () => {
+    try {
+      const token = localStorage.getItem('token'); // Assuming the token is stored in localStorage
+      const response = await axios.get('https://api.bigbolts.ru/item', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      setItems(response.data);
+      setLoading(false);
+    } catch (err) {
+      setError(err.message);
+      setLoading(false);
+    }
+  };
+
   return (
     <div>
       <div className="bg-[#DFDFDF] pb-40 ">
@@ -49,7 +74,13 @@ const Catalog = () => {
               {/* Add more price options */}
             </select>
           </div>
-          <ProductCard />
+          {loading && <p>Loading items...</p>}
+          {error && <p>Error: {error}</p>}
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            {items.map((item) => (
+              <ProductCard key={item.id} product={item} />
+            ))}
+          </div>
         </div>
       </div>
     </div>
