@@ -9,19 +9,31 @@ const PopularCategories = () => {
           <div className="w-full h-[800px] bg-white absolute top-0 left-0 z-0"></div>
           <div className="w-[95%] m-auto flex flex-wrap justify-between pt-20">
             <div className="relative z-10">
-              <div className="w-[500px] h-[500px] bg-[#DFDFDF] z-5 relative mb-4 sm:mb-0" />
+              <img
+                src="images/materials.jpg"
+                alt="Material Image"
+                className="w-[500px] h-[500px] bg-[#DFDFDF] z-5 relative mb-4 sm:mb-0 rounded-xl hover:scale-[1.01] transition-all duration-200"
+              />
               <h2 className="text-[#363636] text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-center">
                 МАТЕРИАЛЫ
               </h2>
             </div>
             <div className="relative z-10">
-              <div className=" w-[500px] h-[500px] bg-[#DFDFDF] z-5 relative mb-4 sm:mb-0" />
-              <h2 className="text-[#363636] text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-center ">
+              <img
+                src="images/tools.jpg"
+                alt="Instrument Image"
+                className=" w-[500px] h-[500px] bg-[#DFDFDF] z-5 relative mb-4 sm:mb-0 rounded-xl hover:scale-[1.01] transition-all duration-200"
+              />
+              <h2 className="text-[#363636] text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-center">
                 ИНСТРУМЕНТЫ
               </h2>
             </div>
             <div className="relative z-10">
-              <div className="w-[500px] h-[500px] bg-[#DFDFDF] z-5 relative mb-4 sm:mb-0" />
+              <img
+                src="images/plumbing.jpg"
+                alt="Sanitary Image"
+                className="w-[500px] h-[500px] bg-[#DFDFDF] z-5 relative mb-4 sm:mb-0 rounded-xl hover:scale-[1.01] transition-all duration-200"
+              />
               <h2 className="text-[#363636] text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-center">
                 САНТЕХНИКА
               </h2>

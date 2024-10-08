@@ -8,6 +8,8 @@ const Catalog = () => {
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1); // New state for current page
+  const itemsPerPage = 16; // Number of items per page
 
   useEffect(() => {
     fetchItems();
@@ -15,12 +17,17 @@ const Catalog = () => {
 
   const fetchItems = async () => {
     try {
-      const token = localStorage.getItem('token'); // Assuming the token is stored in localStorage
-      const response = await axios.get('https://api.bigbolts.ru/item', {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const token = localStorage.getItem("token"); // Assuming the token is stored in localStorage
+      const response = await axios.post(
+        "https://api.bigbolts.ru/item",
+        {},
+        {
+          // Changed to POST
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
       setItems(response.data);
       setLoading(false);
     } catch (err) {
@@ -28,6 +35,26 @@ const Catalog = () => {
       setLoading(false);
     }
   };
+
+  // Calculate the items to display for the current page
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = items.slice(indexOfFirstItem, indexOfLastItem);
+
+  // Function to handle page change
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+
+  // Function to go to the next page
+  const handleNextPage = () => {
+    if (currentPage < totalPages) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
+
+  // Calculate total pages
+  const totalPages = Math.ceil(items.length / itemsPerPage);
 
   return (
     <div>
@@ -77,9 +104,39 @@ const Catalog = () => {
           {loading && <p>Loading items...</p>}
           {error && <p>Error: {error}</p>}
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            {items.map((item) => (
-              <ProductCard key={item.id} product={item} />
+            {currentItems.map(
+              (
+                item // Use currentItems for display
+              ) => (
+                <ProductCard key={item.id} product={item} />
+              )
+            )}
+          </div>
+          {/* Pagination Controls */}
+          <div className="flex mt-20">
+            {Array.from({ length: totalPages }, (_, index) => (
+              <button
+                key={index + 1}
+                onClick={() => handlePageChange(index + 1)}
+                className={`mx-1 px-[18px] py-1 rounded-full text-[20px] ${
+                  currentPage === index + 1
+                    ? "bg-[#ff8800] text-white"
+                    : "bg-gray-200"
+                }`}
+              >
+                {index + 1}
+              </button>
             ))}
+            {/* Next Page Button */}
+            <button
+              onClick={handleNextPage}
+              className={`mx-1 px-3 py-1 rounded text-[25px] ${
+                currentPage < totalPages ? " text-[#ff8800]" : "opacity-30"
+              }`}
+              disabled={currentPage >= totalPages} // Disable if on the last page
+            >
+              Следующая страница
+            </button>
           </div>
         </div>
       </div>

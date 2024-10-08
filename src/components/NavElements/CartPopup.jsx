@@ -4,7 +4,10 @@ import { faTimes, faTrash } from "@fortawesome/free-solid-svg-icons";
 const CartPopup = ({ isOpen, onClose, cartItems, removeFromCart }) => {
   if (!isOpen) return null;
 
-  const total = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  const total = cartItems.reduce(
+    (sum, item) => sum + item.price * item.quantity,
+    0
+  );
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex justify-end">
@@ -34,7 +37,9 @@ const CartPopup = ({ isOpen, onClose, cartItems, removeFromCart }) => {
                       />
                       <div>
                         <h3 className="font-semibold">{item.name}</h3>
-                        <p className="text-gray-600">{item.price} ₽ x {item.quantity}</p>
+                        <p className="text-gray-600">
+                          {item.price} ₽ x {item.quantity}
+                        </p>
                       </div>
                     </div>
                     <button

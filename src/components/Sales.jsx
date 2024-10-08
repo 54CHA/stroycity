@@ -1,4 +1,4 @@
-import ProductCard from "./ProductCard";
+import SaleCard from "./SaleCard";
 
 const Sales = () => {
   return (
@@ -7,7 +7,7 @@ const Sales = () => {
         <div className="text-[#363636] text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-10 pt-10 w-[87%] m-auto">
           ТОВАРЫ СО СКИДКОЙ
         </div>
-        <ProductCard />
+        <SaleCard />
       </div>
     </>
   );
