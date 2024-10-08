@@ -1,9 +1,13 @@
 import productImage from "/public/product_image_temp.png";
 import { useState } from "react";
 import axios from "axios";
+// Import the heart icon (assuming you're using Font Awesome)
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faHeart } from '@fortawesome/free-solid-svg-icons';
 
 const ProductCard = ({ product }) => {
   const [quantity, setQuantity] = useState(1);
+  const [isFavorite, setIsFavorite] = useState(false); // State to track favorite status
 
   const addToCart = async () => {
     try {
@@ -12,10 +16,12 @@ const ProductCard = ({ product }) => {
         .find((row) => row.startsWith("jwt="))
         ?.split("=")[1];
 
+      const apiUrl = "https://api.bigbolts.ru";
+
       const response = await axios.post(
-        "/cart/add",
+        apiUrl + "/cart/add",
         {
-          productId: product.id, // Assuming product has an id field
+          item_id: product.id, // Assuming product has an id field
           quantity: quantity,
         },
         {
@@ -34,8 +40,14 @@ const ProductCard = ({ product }) => {
   };
 
   return (
-    <div className="w-full max-w-[400px] mx-auto p-4 lg:p-6 bg-white">
+    <div className="w-full max-w-[400px] mx-auto p-4 lg:p-6 bg-white relative"> {/* Added relative positioning */}
       <img src={product.image || productImage} alt={product.name} />
+      <button 
+        className="absolute top-2 right-2" // Positioning the heart icon
+        onClick={() => setIsFavorite(!isFavorite)} // Toggle favorite status
+      >
+        <FontAwesomeIcon icon={faHeart} color={isFavorite ? "red" : "gray"} /> {/* Change color based on favorite status */}
+      </button>
       <div className="text-[#363636] text-2xl lg:text-[25px] font-bold mb-4 mt-3">
         {product.name}
       </div>

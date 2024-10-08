@@ -68,7 +68,7 @@ const User = () => {
               <h1 className="font-bold">
                 {userInfo ? userInfo.name : "Loading..."}
               </h1>
-              <FontAwesomeIcon icon={faBell} className="text-[#ff8800] mt-2" />
+              {/* <FontAwesomeIcon icon={faBell} className="text-[#ff8800] mt-2" /> */}
             </div>
           </div>
           <div className="flex justify-between items-center px-4">
