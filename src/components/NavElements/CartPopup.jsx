@@ -1,13 +1,81 @@
+import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes, faTrash } from "@fortawesome/free-solid-svg-icons";
+import axios from "axios";
+import "toastr/build/toastr.min.css";
+import toastr from "toastr";
 
-const CartPopup = ({ isOpen, onClose, cartItems, removeFromCart }) => {
+const CartPopup = ({ isOpen, onClose, removeFromCart }) => {
+  const [cartItems, setCartItems] = useState([]);
+  const [total, setTotal] = useState(0);
+
+  useEffect(() => {
+    // Fetch cart items when the popup is opened
+    const fetchCartItems = async () => {
+      try {
+        const token = document.cookie
+          .split("; ")
+          .find((row) => row.startsWith("jwt="))
+          ?.split("=")[1];
+
+        const apiUrl = "https://api.bigbolts.ru";
+
+        const response = await axios.get(apiUrl + "/buyer/cart", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (response.status === 200) {
+          const items = response.data.items || [];
+          setCartItems(items);
+
+          // Calculate the total price
+          const totalPrice = items.reduce(
+            (sum, item) => sum + item.price * item.quantity,
+            0
+          );
+          setTotal(totalPrice);
+        }
+      } catch (error) {
+        console.error("Error fetching cart items", error);
+      }
+    };
+
+    if (isOpen) {
+      fetchCartItems();
+    }
+  }, [isOpen]);
+
   if (!isOpen) return null;
 
-  const total = cartItems.reduce(
-    (sum, item) => sum + item.price * item.quantity,
-    0
-  );
+  const handleRemoveFromCart = async (itemId) => {
+    try {
+      const token = document.cookie
+        .split("; ")
+        .find((row) => row.startsWith("jwt="))
+        ?.split("=")[1];
+
+      const apiUrl = "https://api.bigbolts.ru";
+
+      // Send DELETE request to remove item from cart
+      await axios.delete(`${apiUrl}/buyer/cart`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        params: {
+          cart_item_id: itemId,
+        },
+      });
+
+      // Update cart items after removal
+      setCartItems((prevItems) =>
+        prevItems.filter((item) => item.id !== itemId)
+      );
+    } catch (error) {
+      console.error("Error removing item from cart", error);
+    }
+  };
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex justify-end">
@@ -31,7 +99,7 @@ const CartPopup = ({ isOpen, onClose, cartItems, removeFromCart }) => {
                   <div className="flex items-center justify-between">
                     <div className="flex items-center">
                       <img
-                        src={item.image}
+                        src={item.image || "/public/product_image_temp.png"} // Use placeholder if image is missing
                         alt={item.name}
                         className="w-16 h-16 object-cover mr-4"
                       />
@@ -39,11 +107,13 @@ const CartPopup = ({ isOpen, onClose, cartItems, removeFromCart }) => {
                         <h3 className="font-semibold">{item.name}</h3>
                         <p className="text-gray-600">
                           {item.price} ₽ x {item.quantity}
+                          <br />
+                          id:{item.id}
                         </p>
                       </div>
                     </div>
                     <button
-                      onClick={() => removeFromCart(item.id)}
+                      onClick={() => handleRemoveFromCart(item.id)} // Updated to use the new function
                       className="text-red-500 hover:text-red-700"
                     >
                       <FontAwesomeIcon icon={faTrash} />

@@ -1,37 +1,119 @@
 import productImage from "/public/product_image_temp.png";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
-// Import the heart icon (assuming you're using Font Awesome)
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHeart } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faHeart } from "@fortawesome/free-solid-svg-icons";
 
 const ProductCard = ({ product }) => {
   const [quantity, setQuantity] = useState(1);
   const [isFavorite, setIsFavorite] = useState(false); // State to track favorite status
 
+  const apiUrl = "https://api.bigbolts.ru";
+
+  // Get the token from cookies
+  const getToken = () => {
+    return document.cookie
+      .split("; ")
+      .find((row) => row.startsWith("jwt="))
+      ?.split("=")[1];
+  };
+
+  // useEffect to check if the product is already in favorites
+  useEffect(() => {
+    const checkIfFavorite = async () => {
+      try {
+        const token = getToken();
+        if (!token) return;
+
+        const response = await axios.get(apiUrl + `/buyer`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        // Assuming response.data.favorites is an array of favorite products
+        if (
+          response.data.favorites &&
+          response.data.favorites.some((favItem) => favItem.id === product.id)
+        ) {
+          setIsFavorite(true); // Set state to true if it's already in favorites
+        }
+      } catch (error) {
+        console.error("Error checking favorite status:", error);
+      }
+    };
+
+    checkIfFavorite();
+  }, [product.id]); // Only run when the product ID changes
+
+  // Function to add/remove from favorites based on current status
+  const toggleFavorite = async () => {
+    try {
+      const token = getToken();
+      if (!token) return;
+
+      if (isFavorite) {
+        // Send DELETE request to remove from favorites
+        const response = await axios.delete(apiUrl + `/buyer/favorites`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          params: {
+            item_id: product.id,
+          },
+        });
+        if (response.status === 200) {
+          console.log("Product removed from favorites");
+        }
+      } else {
+        // Send POST request to add to favorites
+        const response = await axios.post(
+          apiUrl + "/buyer/favorites",
+          {
+            item_id: product.id,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+            params: {
+              item_id: product.id,
+            },
+          }
+        );
+        if (response.status === 200) {
+          console.log("Product added to favorites:", response.data);
+        }
+      }
+
+      // Toggle the favorite state
+      setIsFavorite(!isFavorite);
+    } catch (error) {
+      console.error("Error toggling favorite status:", error);
+    }
+  };
+
   const addToCart = async () => {
     try {
-      const token = document.cookie
-        .split("; ")
-        .find((row) => row.startsWith("jwt="))
-        ?.split("=")[1];
-
-      const apiUrl = "https://api.bigbolts.ru";
+      const token = getToken();
+      if (!token) return;
 
       const response = await axios.post(
-        apiUrl + "/cart/add",
+        apiUrl + "/buyer/cart",
         {
-          item_id: product.id, // Assuming product has an id field
+          item_id: product.id,
           quantity: quantity,
         },
         {
           headers: {
             Authorization: `Bearer ${token}`,
           },
+          params: {
+            item_id: product.id,
+          },
         }
       );
       if (response.status === 200) {
-        // Handle successful addition to cart
         console.log("Product added to cart:", response.data);
       }
     } catch (error) {
@@ -40,16 +122,22 @@ const ProductCard = ({ product }) => {
   };
 
   return (
-    <div className="w-full max-w-[400px] mx-auto p-4 lg:p-6 bg-white relative"> {/* Added relative positioning */}
+    <div className="w-full max-w-[400px] mx-auto p-4 lg:p-6 bg-white relative">
       <img src={product.image || productImage} alt={product.name} />
-      <button 
-        className="absolute top-2 right-2" // Positioning the heart icon
-        onClick={() => setIsFavorite(!isFavorite)} // Toggle favorite status
+      <button
+        className="absolute top-10 right-10" // Positioning the heart icon
+        onClick={toggleFavorite} // Call the function to toggle favorites
       >
-        <FontAwesomeIcon icon={faHeart} color={isFavorite ? "red" : "gray"} /> {/* Change color based on favorite status */}
+        <FontAwesomeIcon
+          icon={faHeart}
+          color={isFavorite ? "orange" : "gray"} // Heart color based on favorite state
+          className="size-8"
+        />
       </button>
       <div className="text-[#363636] text-2xl lg:text-[25px] font-bold mb-4 mt-3">
         {product.name}
+        <br />
+        id: {product.id}
       </div>
       <div className="text-base lg:text-[25px] font-normal text-[#363636] leading-relaxed mb-4">
         {product.description}

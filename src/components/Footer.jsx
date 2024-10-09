@@ -1,7 +1,7 @@
 const Footer = () => {
   return (
     <footer className=" w-[87%] m-auto">
-      <div className="flex justify-between mt-20 mb-20 text-[25px] font-thin text-gray-400">
+      <div className=" justify-between mt-20 mb-20 lg:text-[25px] font-thin text-gray-400 hidden mn:text-[18px] mn:flex">
         <div className="flex-col">
           <b className="text-black">Покупателям </b>
           <p>Вопросы и ответы</p>
@@ -34,10 +34,10 @@ const Footer = () => {
         </div>
       </div>
       <hr className="border-gray-400 my-4" />
-      <div className="text-gray-400 flex justify-between m-10">
-        <p>©2024 Stroycity. Все права защищены.</p>
-        <p>Политика конфиденциальности</p>
-        <p>Разработка сайта</p>
+      <div className="text-gray-400 justify-between m-10 text-[18px] block mn:flex">
+        <p className="my-2 mn:my-0">©2024 Stroycity. Все права защищены.</p>
+        <p className="my-2 mn:my-0">Политика конфиденциальности</p>
+        <p className="my-2 mn:my-0">Разработка сайта</p>
       </div>
     </footer>
   );
