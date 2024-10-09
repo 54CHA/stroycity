@@ -122,7 +122,7 @@ function App() {
           }
         />
         <Route
-          path="/Product"
+          path="/catalog/product/:id/:productName" // Added a forward slash before :productName
           element={
             <>
               {" "}

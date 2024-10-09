@@ -3,10 +3,13 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart } from "@fortawesome/free-solid-svg-icons";
+import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom"; // Import useNavigate
 
 const ProductCard = ({ product }) => {
   const [quantity, setQuantity] = useState(1);
   const [isFavorite, setIsFavorite] = useState(false); // State to track favorite status
+  const navigate = useNavigate(); // Initialize useNavigate
 
   const apiUrl = "https://api.bigbolts.ru";
 
@@ -50,7 +53,10 @@ const ProductCard = ({ product }) => {
   const toggleFavorite = async () => {
     try {
       const token = getToken();
-      if (!token) return;
+      if (!token) {
+        navigate("/signin"); // Redirect to sign-in page if no token
+        return;
+      }
 
       if (isFavorite) {
         // Send DELETE request to remove from favorites
@@ -96,7 +102,10 @@ const ProductCard = ({ product }) => {
   const addToCart = async () => {
     try {
       const token = getToken();
-      if (!token) return;
+      if (!token) {
+        navigate("/signin"); // Redirect to sign-in page if no token
+        return;
+      }
 
       const response = await axios.post(
         apiUrl + "/buyer/cart",
@@ -134,10 +143,14 @@ const ProductCard = ({ product }) => {
           className="size-8"
         />
       </button>
-      <div className="text-[#363636] text-2xl lg:text-[25px] font-bold mb-4 mt-3">
-        {product.name}
-        <br />
-        id: {product.id}
+      <div className="text-[#363636] text-2xl lg:text-[25px] font-bold mb-4 mt-3 transition-all hover:text-[#ff8800]">
+        <Link to={`product/${product.id}/${encodeURIComponent(product.name)}`}>
+          {" "}
+          {/* Updated to use product name in URL */} {/* Added hover effect */}
+          {product.name}
+          <br />
+          id: {product.id}
+        </Link>
       </div>
       <div className="text-base lg:text-[25px] font-normal text-[#363636] leading-relaxed mb-4">
         {product.description}

@@ -130,12 +130,13 @@ const Catalog = () => {
             {/* Next Page Button */}
             <button
               onClick={handleNextPage}
-              className={`mx-1 px-3 py-1 rounded text-[25px] ${
+              className={`mx-1 px-3 py-1 rounded text-[25px]  ${
                 currentPage < totalPages ? " text-[#ff8800]" : "opacity-30"
               }`}
               disabled={currentPage >= totalPages} // Disable if on the last page
             >
-              Следующая страница
+              Следующая страница{" "}
+              <FontAwesomeIcon icon={faArrowRight}  className="translate-y-[2px]"/>{" "}
             </button>
           </div>
         </div>

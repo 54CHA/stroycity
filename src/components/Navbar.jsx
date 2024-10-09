@@ -162,7 +162,7 @@ const Navbar = () => {
                     />
                     <div
                       className="text-[#ff8800] border-[#cacaca] h-[100px]  items-center mr-10 font-bold hidden 
-                  lg:flex lg:text-[20px] 
+                  lg:flex lg:text-[30px] 
                   xl:text-[30px] 
                   2xl:text-[50px] "
                     >
@@ -181,7 +181,7 @@ const Navbar = () => {
                     />
                   </div>
                   {isDropdownOpen && (
-                    <div className="absolute top-[100px] left-[24%] bg-white border border-[#cacaca] z-10 text-[14px] sm:text-[20px] p-8">
+                    <div className="absolute top-[100px] bg-white border ml-[-20px] border-[#cacaca] z-10 text-[14px] sm:text-[20px] p-8">
                       <Link
                         to="/catalog"
                         className="block py-2 hover:text-[#ff8800] pb-4"
@@ -219,7 +219,7 @@ const Navbar = () => {
                   </div>
                 </div>
 
-                <div className="hidden xl:flex items-center space-x-8 ml-10 xs:hidden">
+                <div className="hidden 2xl:flex items-center space-x-8 ml-10 ">
                   <Link
                     to="/DeliveryAndPayment"
                     className="text-[#363636] text-sm sm:text-base md:text-lg lg:text-lg font-medium hover:text-[#ff8800] transition duration-300"

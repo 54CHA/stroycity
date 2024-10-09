@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 const PopularCategories = () => {
   return (
     <div className="bg-[#DFDFDF] pb-40 pt-20 z-0">
@@ -7,7 +9,7 @@ const PopularCategories = () => {
         </h1>
         <div className="relative z-0">
           <div className="m-auto flex flex-wrap justify-center gap-7 pt-20 pb-40 bg-white rounded-md">
-            <div className="z-10">
+            <Link className="z-10">
               <img
                 src="images/materials.jpg"
                 alt="Material Image"
@@ -16,7 +18,7 @@ const PopularCategories = () => {
               <h2 className="text-[#363636] text-3xl lg:text-5xl font-bold text-center">
                 МАТЕРИАЛЫ
               </h2>
-            </div>
+            </Link>
             <div className=" z-10 flex-col justify-center">
               <img
                 src="images/tools.jpg"
