@@ -1,6 +1,12 @@
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const PopularCategories = () => {
+  const navigate = useNavigate();
+
+  const handleCategoryClick = (categoryId) => {
+    navigate("/catalog", { state: { selectedCategory: categoryId } });
+  };
+
   return (
     <div className="bg-[#DFDFDF] pb-40 pt-20 z-0">
       <section className="w-[87%] m-auto">
@@ -9,7 +15,8 @@ const PopularCategories = () => {
         </h1>
         <div className="relative z-0">
           <div className="m-auto flex flex-wrap justify-center gap-7 pt-20 pb-40 bg-white rounded-md">
-            <Link className="z-10">
+            {/* Materials category */}
+            <div className="z-10" onClick={() => handleCategoryClick("9")}>
               <img
                 src="images/materials.jpg"
                 alt="Material Image"
@@ -18,8 +25,10 @@ const PopularCategories = () => {
               <h2 className="text-[#363636] text-3xl lg:text-5xl font-bold text-center">
                 МАТЕРИАЛЫ
               </h2>
-            </Link>
-            <div className=" z-10 flex-col justify-center">
+            </div>
+
+            {/* Tools category */}
+            <div className="z-10" onClick={() => handleCategoryClick("10")}>
               <img
                 src="images/tools.jpg"
                 alt="Instrument Image"
@@ -29,7 +38,9 @@ const PopularCategories = () => {
                 ИНСТРУМЕНТЫ
               </h2>
             </div>
-            <div className="relative z-10">
+
+            {/* Sanitary category */}
+            <div className="z-10" onClick={() => handleCategoryClick("11")}>
               <img
                 src="images/plumbing.jpg"
                 alt="Sanitary Image"

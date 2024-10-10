@@ -20,6 +20,8 @@ import PowerTools from "./components/CatalogFilters/PowerTools";
 import Tools from "./components/CatalogFilters/Tools";
 import Santehnika from "./components/CatalogFilters/Santehnika";
 import Materials from "./components/CatalogFilters/Materials";
+import CompleteOrder from "./components/CompleteOrder";
+import Divider from "./components/Divider";
 
 function App() {
   return (
@@ -55,6 +57,14 @@ function App() {
               <Navbar />
               <Tools />
               <Footer />
+            </>
+          }
+        />
+        <Route
+          path="/a"
+          element={
+            <>
+              <Sales />
             </>
           }
         />
@@ -133,6 +143,18 @@ function App() {
           }
         />
         <Route element={<ProtectedRoute />}>
+          <Route
+            path="/cart/checkout"
+            element={
+              <>
+                {" "}
+                <Navbar />
+                <CompleteOrder />
+                <Divider />
+                <Footer />
+              </>
+            }
+          />
           <Route
             path="/user"
             element={

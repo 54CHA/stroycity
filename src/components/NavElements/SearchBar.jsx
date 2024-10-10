@@ -1,16 +1,45 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass, faTimes } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const SearchBar = ({ onClose }) => {
   const [searchTerm, setSearchTerm] = useState("");
+  const navigate = useNavigate(); // Use navigate for redirecting
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Add your search logic here
-    console.log("Searching for:", searchTerm);
-    // Optionally close the search bar after submitting
-    // onClose();
+    const token = document.cookie
+      .split("; ")
+      .find((row) => row.startsWith("jwt="))
+      ?.split("=")[1];
+
+    try {
+      const response = await axios.post(
+        "https://api.bigbolts.ru/item",
+        {
+          brands: 0,
+          categories: 0,
+          materials: 0,
+          max_price: 0,
+          min_price: 0,
+          query: searchTerm, // Send the search term
+          sellers: 0,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      // Redirect to the catalog page with the search results passed as state
+      navigate("/catalog", { state: { searchResults: response.data } });
+      window.location.reload;
+    } catch (error) {
+      console.error("Error performing search:", error);
+    }
   };
 
   return (

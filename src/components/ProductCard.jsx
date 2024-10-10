@@ -131,7 +131,7 @@ const ProductCard = ({ product }) => {
   };
 
   return (
-    <div className="w-full max-w-[400px] mx-auto p-4 lg:p-6 bg-white relative">
+    <div className="w-full max-w-[400px] mx-auto p-4 lg:p-6 bg-white relative rounded-md shadow-md">
       <img src={product.image || productImage} alt={product.name} />
       <button
         className="absolute top-10 right-10" // Positioning the heart icon
@@ -159,7 +159,7 @@ const ProductCard = ({ product }) => {
         <div>{product.price}₽</div>
         <div className="opacity-50">/1м²</div>
       </div>
-      <div className="flex items-center justify-between flex-row gap-4">
+      <div className="flex items-center justify-between flex-col xl:flex-row gap-4">
         <div className="flex items-center border-2 border-[#dfdfdf] w-full max-w-[180px] justify-around transition-colors hover:bg-gray-100">
           <button
             className="text-[30px] mt-[-3px]"

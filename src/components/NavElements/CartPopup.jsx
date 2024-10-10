@@ -4,6 +4,7 @@ import { faTimes, faTrash } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
 import "toastr/build/toastr.min.css";
 import toastr from "toastr";
+import { Link } from "react-router-dom";
 
 const CartPopup = ({ isOpen, onClose, removeFromCart }) => {
   const [cartItems, setCartItems] = useState([]);
@@ -79,7 +80,7 @@ const CartPopup = ({ isOpen, onClose, removeFromCart }) => {
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex justify-end">
-      <div className="bg-white w-3/12 h-full p-6 overflow-y-auto">
+      <div className="bg-white w-full lg:w-4/12 h-full p-6 overflow-y-auto">
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-2xl font-bold">Корзина</h2>
           <button
@@ -114,7 +115,7 @@ const CartPopup = ({ isOpen, onClose, removeFromCart }) => {
                     </div>
                     <button
                       onClick={() => handleRemoveFromCart(item.id)} // Updated to use the new function
-                      className="text-red-500 hover:text-red-700"
+                      className="ml-4 text-gray-500 hover:text-orange-500 transition-all text-[20px]"
                     >
                       <FontAwesomeIcon icon={faTrash} />
                     </button>
@@ -124,9 +125,9 @@ const CartPopup = ({ isOpen, onClose, removeFromCart }) => {
             </ul>
             <div className="mt-4 border-t pt-4">
               <p className="text-xl font-bold">Итого: {total} ₽</p>
-              <button className="mt-4 w-full bg-[#ff8800] text-white py-2 px-4 rounded hover:bg-[#ff6a00] transition-colors">
-                Оформить заказ
-              </button>
+              <div className="mt-4 w-full bg-[#ff8800] text-white py-2 px-4 rounded hover:bg-[#ff6a00] transition-colors">
+                <Link to="/cart/checkout">Оформить заказ</Link>
+              </div>
             </div>
           </>
         )}

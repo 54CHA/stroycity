@@ -53,7 +53,7 @@ const AuthPage = () => {
         // You might want to redirect the user or update the UI here
         navigate("/user");
       } else {
-        // Handle error response  
+        // Handle error response
         toastr.error("Failed to send user data");
         console.error("Failed to send user data");
       }

@@ -3,116 +3,201 @@ import ProductCard from "./ProductCard";
 import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from "axios";
+import { useLocation } from "react-router-dom";
 
 const Catalog = () => {
   const [items, setItems] = useState([]);
+  const [brands, setBrands] = useState([]);
+  const [materials, setMaterials] = useState([]);
+  const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [currentPage, setCurrentPage] = useState(1); // New state for current page
-  const itemsPerPage = 16; // Number of items per page
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 16;
 
+  const [selectedBrand, setSelectedBrand] = useState(null);
+  const [selectedCategory, setSelectedCategory] = useState(null);
+  const [selectedMaterial, setSelectedMaterial] = useState(null);
+  const [minPrice, setMinPrice] = useState(0);
+  const [maxPrice, setMaxPrice] = useState(0);
+  const [sellers, setSellers] = useState([]);
+
+  const location = useLocation();
+  const selectedCategoryFromLink = location.state?.selectedCategory || null;
+
+  // Fetch all necessary data on component mount
   useEffect(() => {
-    fetchItems();
+    const fetchData = async () => {
+      const token = localStorage.getItem("token");
+
+      try {
+        const [brandsResponse, materialsResponse, categoriesResponse] =
+          await Promise.all([
+            axios.get("https://api.bigbolts.ru/brand", {
+              headers: { Authorization: `Bearer ${token}` },
+            }),
+            axios.get("https://api.bigbolts.ru/material", {
+              headers: { Authorization: `Bearer ${token}` },
+            }),
+            axios.get("https://api.bigbolts.ru/category", {
+              headers: { Authorization: `Bearer ${token}` },
+            }),
+          ]);
+
+        setBrands(brandsResponse.data);
+        setMaterials(materialsResponse.data);
+        setCategories(categoriesResponse.data);
+        setLoading(false);
+      } catch (err) {
+        setError(err.message);
+        setLoading(false);
+      }
+    };
+
+    fetchData();
   }, []);
 
-  const fetchItems = async () => {
-    try {
-      const token = localStorage.getItem("token"); // Assuming the token is stored in localStorage
-      const response = await axios.post(
-        "https://api.bigbolts.ru/item",
-        {},
-        {
-          // Changed to POST
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      setItems(response.data);
-      setLoading(false);
-    } catch (err) {
-      setError(err.message);
-      setLoading(false);
-    }
+  // Fetch items when filters or selected category change
+  useEffect(() => {
+    const fetchFilteredItems = async () => {
+      const token = localStorage.getItem("token");
+      const payload = {
+        brands: selectedBrand ? [parseInt(selectedBrand)] : 0,
+        categories: selectedCategoryFromLink
+          ? [parseInt(selectedCategoryFromLink)]
+          : selectedCategory
+          ? [parseInt(selectedCategory)]
+          : 0,
+        materials: selectedMaterial ? [parseInt(selectedMaterial)] : 0,
+        min_price: minPrice,
+        max_price: maxPrice,
+        sellers: sellers.length > 0 ? sellers : 0,
+      };
+
+      try {
+        const response = await axios.post(
+          "https://api.bigbolts.ru/item",
+          payload,
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
+        setItems(response.data);
+      } catch (err) {
+        setError(err.message);
+      }
+    };
+
+    fetchFilteredItems();
+  }, [
+    selectedBrand,
+    selectedCategory,
+    selectedMaterial,
+    selectedCategoryFromLink,
+  ]);
+
+  // Handle changes in filters
+  const handleBrandChange = (event) => {
+    setSelectedBrand(event.target.value);
   };
 
-  // Calculate the items to display for the current page
-  const indexOfLastItem = currentPage * itemsPerPage;
-  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = items.slice(indexOfFirstItem, indexOfLastItem);
+  const handleCategoryChange = (event) => {
+    setSelectedCategory(event.target.value);
+  };
 
-  // Function to handle page change
+  const handleMaterialChange = (event) => {
+    setSelectedMaterial(event.target.value);
+  };
+
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
   };
 
-  // Function to go to the next page
   const handleNextPage = () => {
     if (currentPage < totalPages) {
       setCurrentPage(currentPage + 1);
     }
   };
 
-  // Calculate total pages
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = items.slice(indexOfFirstItem, indexOfLastItem);
   const totalPages = Math.ceil(items.length / itemsPerPage);
 
   return (
     <div>
-      <div className="bg-[#DFDFDF] pb-40 ">
+      <div className="bg-[#DFDFDF] pb-40">
         <div className="w-[87%] m-auto">
           <div className="flex items-center text-[18px] pt-[4rem]">
             <span className="text-gray-400">Главная </span>
             <FontAwesomeIcon
               icon={faArrowRight}
               className="text-gray-400 mx-1"
-            />{" "}
-            Каталог товаров
+            />
+            {!selectedCategoryFromLink && <h>Каталог товаров</h>}
+            {selectedCategoryFromLink == 9 && <h>Материалы</h>}
+            {selectedCategoryFromLink == 10 && <h>Инструменты</h>}
+            {selectedCategoryFromLink == 11 && <h>Сантехника</h>}
+            {selectedCategoryFromLink == 12 && <h>Электрооборудование</h>}
           </div>
-          <div className="text-[#363636] text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-10 pt-10 ">
-            Каталог
+          <div className="text-[#363636] text-5xl lg:text-6xl font-bold mb-10 pt-10">
+            {!selectedCategoryFromLink && <h>Каталог</h>}
+            {selectedCategoryFromLink == 9 && <h>Материалы</h>}
+            {selectedCategoryFromLink == 10 && <h>Инструменты</h>}
+            {selectedCategoryFromLink == 11 && <h>Сантехника</h>}
+            {selectedCategoryFromLink == 12 && <h>Электрооборудование</h>}
           </div>
-          <div className="flex gap-5 mb-10 ">
-            <select className="p-1 flex shadow-md">
+
+          <div className="flex gap-5 mb-10">
+            <select
+              name="brand"
+              className="p-1 flex shadow-md"
+              onChange={handleBrandChange}
+            >
               <option value="">Бренд</option>
-              {/* Add options for brands */}
+              {brands.map((brand) => (
+                <option key={brand.id} value={brand.id}>
+                  {brand.name}
+                </option>
+              ))}
             </select>
 
-            <select className="p-1 flex shadow-md">
-              <option value="">Доступность</option>
-              <option value="in-stock">В наличии</option>
-              <option value="out-of-stock">Нет в наличии</option>
-            </select>
+            {!selectedCategoryFromLink && (
+              <select
+                name="category"
+                className="p-1 flex shadow-md"
+                onChange={handleCategoryChange}
+              >
+                <option value="">Категория</option>
+                {categories.map((category) => (
+                  <option key={category.id} value={category.id}>
+                    {category.name}
+                  </option>
+                ))}
+              </select>
+            )}
 
-            <select className="p-1 flex shadow-md">
-              <option value="">Продавец</option>
-              {/* Add options for sellers */}
-            </select>
-
-            <select className="p-1 flex shadow-md">
+            <select
+              name="material"
+              className="p-1 flex shadow-md"
+              onChange={handleMaterialChange}
+            >
               <option value="">Материал</option>
-              {/* Add options for materials */}
-            </select>
-
-            <select className="p-1 flex shadow-md">
-              <option value="">Цена, Р</option>
-              <option value="0-1000">{">"} 1000 Р</option>
-              <option value="1000-5000">{">"} 5000 Р</option>
-              <option value="5000-10000">{">"} 10000 Р</option>
-              {/* Add more price options */}
+              {materials.map((material) => (
+                <option key={material.id} value={material.id}>
+                  {material.name}
+                </option>
+              ))}
             </select>
           </div>
+
           {loading && <p>Loading items...</p>}
           {error && <p>Error: {error}</p>}
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            {currentItems.map(
-              (
-                item // Use currentItems for display
-              ) => (
-                <ProductCard key={item.id} product={item} />
-              )
-            )}
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 4xl:grid-cols-5 gap-6">
+            {currentItems.map((item) => (
+              <ProductCard key={item.id} product={item} />
+            ))}
           </div>
-          {/* Pagination Controls */}
           <div className="flex mt-20">
             {Array.from({ length: totalPages }, (_, index) => (
               <button
@@ -127,16 +212,18 @@ const Catalog = () => {
                 {index + 1}
               </button>
             ))}
-            {/* Next Page Button */}
             <button
               onClick={handleNextPage}
-              className={`mx-1 px-3 py-1 rounded text-[25px]  ${
+              className={`mx-1 px-3 py-1 rounded text-[25px] ${
                 currentPage < totalPages ? " text-[#ff8800]" : "opacity-30"
               }`}
-              disabled={currentPage >= totalPages} // Disable if on the last page
+              disabled={currentPage >= totalPages}
             >
               Следующая страница{" "}
-              <FontAwesomeIcon icon={faArrowRight}  className="translate-y-[2px]"/>{" "}
+              <FontAwesomeIcon
+                icon={faArrowRight}
+                className="translate-y-[2px]"
+              />
             </button>
           </div>
         </div>

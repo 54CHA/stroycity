@@ -48,7 +48,7 @@ const FAQ = () => {
   ];
 
   return (
-    <div className="bg-[#DFDFDF] pb-20 pt-10">
+    <div className="bg-[#DFDFDF] pb-20 ">
       <div className=" relative w-[87%] m-auto">
         <div className="flex items-center text-[18px] pt-[4rem] mb-10">
           <span className="text-gray-400">Главная </span>

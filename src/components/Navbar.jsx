@@ -14,6 +14,8 @@ import SearchBar from "./NavElements/SearchBar";
 import FavsPopup from "./NavElements/FavsPopup";
 import CartPopup from "./NavElements/CartPopup";
 
+import { useNavigate } from "react-router-dom";
+
 const Navbar = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isSearchBarOpen, setIsSearchBarOpen] = useState(false);
@@ -29,6 +31,12 @@ const Navbar = () => {
 
   const removeFromCart = (itemId) => {
     setCartItems(cartItems.filter((item) => item.id !== itemId));
+  };
+
+  const navigate = useNavigate();
+
+  const handleCategoryClick = (categoryId) => {
+    navigate("/catalog", { state: { selectedCategory: categoryId } });
   };
 
   useEffect(() => {
@@ -188,30 +196,34 @@ const Navbar = () => {
                       >
                         Весь Каталог
                       </Link>
-                      <Link
+                      <h
+                        onClick={() => handleCategoryClick("9")}
                         to="/catalog/materials"
                         className="block py-2 hover:text-[#ff8800] pb-4"
                       >
                         Материалы
-                      </Link>
-                      <Link
+                      </h>
+                      <h
+                        onClick={() => handleCategoryClick("10")}
                         to="/catalog/tools"
                         className="block py-2 hover:text-[#ff8800] pb-4"
                       >
                         Инструменты
-                      </Link>
-                      <Link
+                      </h>
+                      <h
+                        onClick={() => handleCategoryClick("11")}
                         to="/catalog/plumbing"
                         className="block py-2 hover:text-[#ff8800] pb-4"
                       >
                         Сантехника
-                      </Link>
-                      <Link
+                      </h>
+                      <h
+                        onClick={() => handleCategoryClick("12")}
                         to="/catalog/power_tools"
                         className="block py-2 hover:text-[#ff8800] pb-4"
                       >
                         Электрооборудование
-                      </Link>
+                      </h>
                     </div>
                   )}
                   <div className="text-[#ff8800] text-[18px] sm:text-[25px] font-bold pr-10 pl-5 h-full flex items-center">

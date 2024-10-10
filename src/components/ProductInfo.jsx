@@ -1,27 +1,35 @@
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRight, faHeart } from "@fortawesome/free-solid-svg-icons";
-
+import Reviews from "./Reviews";
 const ProductInfo = () => {
   const { id, name } = useParams(); // Get the id and name from URL parameters
   const [product, setProduct] = useState(null);
   const [quantity, setQuantity] = useState(1); // Add state for quantity
+  const [isFavorite, setIsFavorite] = useState(false); // State for favorite status
+  const navigate = useNavigate(); // Initialize useNavigate for redirect
 
   const apiUrl = "https://api.bigbolts.ru";
+
+  // Function to get the token from cookies
   const getToken = () => {
     return document.cookie
       .split("; ")
       .find((row) => row.startsWith("jwt="))
       ?.split("=")[1];
   };
+
   useEffect(() => {
     // Fetch product data based on the id
     const fetchProduct = async () => {
       try {
         const token = getToken();
-        if (!token) return;
+        if (!token) {
+          navigate("/signin"); // Redirect to sign-in if no token
+          return;
+        }
         const response = await axios.get(apiUrl + `/item`, {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -36,8 +44,114 @@ const ProductInfo = () => {
       }
     };
 
+    // Check if the product is in favorites
+    const checkIfFavorite = async () => {
+      try {
+        const token = getToken();
+        if (!token) return;
+
+        const response = await axios.get(apiUrl + `/buyer`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (
+          response.data.favorites &&
+          response.data.favorites.some((favItem) => favItem.id === id)
+        ) {
+          setIsFavorite(true); // Set state to true if it's already in favorites
+        }
+      } catch (error) {
+        console.error("Error checking favorite status:", error);
+      }
+    };
+
     fetchProduct();
-  }, [id]); // Only refetch when id changes
+    checkIfFavorite();
+  }, [id, navigate]);
+
+  // Function to add/remove product from favorites
+  const toggleFavorite = async () => {
+    try {
+      const token = getToken();
+      if (!token) {
+        navigate("/signin"); // Redirect to sign-in page if no token
+        return;
+      }
+
+      if (isFavorite) {
+        // Send DELETE request to remove from favorites
+        const response = await axios.delete(apiUrl + `/buyer/favorites`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          params: {
+            item_id: product.id,
+          },
+        });
+        if (response.status === 200) {
+          console.log("Product removed from favorites");
+        }
+      } else {
+        // Send POST request to add to favorites
+        const response = await axios.post(
+          apiUrl + "/buyer/favorites",
+          {
+            item_id: product.id,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+            params: {
+              item_id: product.id,
+            },
+          }
+        );
+        if (response.status === 200) {
+          console.log("Product added to favorites:", response.data);
+        }
+      }
+
+      // Toggle the favorite state
+      setIsFavorite(!isFavorite);
+    } catch (error) {
+      console.error("Error toggling favorite status:", error);
+    }
+  };
+
+  // Function to add product to cart
+  const addToCart = async () => {
+    try {
+      const token = getToken();
+      if (!token) {
+        navigate("/signin"); // Redirect to sign-in if no token
+        return;
+      }
+
+      const response = await axios.post(
+        apiUrl + "/buyer/cart",
+        {
+          item_id: product.id,
+          quantity: quantity,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          params: {
+            item_id: product.id,
+          },
+        }
+      );
+      if (response.status === 200) {
+        console.log("Product added to cart:", response.data);
+      }
+    } catch (error) {
+      console.error("Error adding product to cart:", error);
+    }
+  };
 
   if (!product) {
     return <div>Loading...</div>; // Show loading state while data is being fetched
@@ -59,18 +173,41 @@ const ProductInfo = () => {
           />{" "}
           {product.name}
         </div>
-        <div className="flex justify-between">
+
+        <div className="flex flex-col 2xl:flex-row gap-5">
+          <div className="flex flex-row 2xl:flex-col gap-3 2xl:gap-5 flex-wrap">
+            <img
+              src={product.image || "/WhiteBg.png"} // Use product image if available
+              alt={product.name}
+              className="w-[120px] h-[120px] mn:w-[150px] mn:h-[150px] lg:w-[170px] lg:h-[170px] object-cover"
+            />
+            <img
+              src={product.image || "/WhiteBg.png"} // Use product image if available
+              alt={product.name}
+              className="w-[120px] h-[120px] mn:w-[150px] mn:h-[150px] lg:w-[170px] lg:h-[170px] object-cover"
+            />
+            <img
+              src={product.image || "/WhiteBg.png"} // Use product image if available
+              alt={product.name}
+              className="w-[120px] h-[120px] mn:w-[150px] mn:h-[150px] lg:w-[170px] lg:h-[170px] object-cover"
+            />
+            <img
+              src={product.image || "/WhiteBg.png"} // Use product image if available
+              alt={product.name}
+              className="w-[120px] h-[120px] mn:w-[150px] mn:h-[150px] lg:w-[170px] lg:h-[170px] object-cover"
+            />
+          </div>
           <img
             src={product.image || "/WhiteBg.png"} // Use product image if available
             alt={product.name}
-            className="w-[50%] h-[50%] object-cover"
+            className=" w-[300px] h-[300px]  mn:w-[600px] mn:h-[600px] sm:ml-[55px] mn:ml-[15px] lg:ml-[50px] object-cover 2xl:mt-[70px]"
           />
 
-          <div className="flex flex-col w-full">
-            <h className="text-[#363636] text-3xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-10">
+          <div className="flex flex-col ml-10">
+            <h className="text-[#363636] text-3xl sm:text-3xl md:text-4xl lg:text-5xl font-bold md:mb-10">
               {product.name} {/* Display product name */}
             </h>
-            <div className="flex items-center gap-2 text-[#ff8800] text-xl lg:text-[35px] font-bold mb-[60px]">
+            <div className="flex items-center gap-2 text-[#ff8800] text-xl lg:text-[35px] font-bold mb-5 md:mb-[60px]">
               <div>{product.price}₽</div> {/* Display product price */}
               <div className="opacity-50">/1м²</div>
             </div>
@@ -92,19 +229,26 @@ const ProductInfo = () => {
                   +
                 </button>
               </div>
-              <button className="w-full max-w-[180px] bg-[#ff8800] text-[#363636] text-[25px] font-normal py-1 self-center transition-colors hover:bg-[#ffb476]">
+              <button
+                className="w-full max-w-[180px] bg-[#ff8800] text-[#363636] text-[25px] font-normal py-1 self-center transition-colors hover:bg-[#ffb476]"
+                onClick={addToCart} // Add to cart functionality
+              >
                 В корзину
               </button>
-              <FontAwesomeIcon
-                icon={faHeart}
-                className="text-[#ff8800] text-[33px] border-2 border-[#ffffff] p-1"
-              />
+              <button onClick={toggleFavorite}>
+                <FontAwesomeIcon
+                  icon={faHeart}
+                  className="text-[33px] border-2 border-[#ffffff] p-1"
+                  color={isFavorite ? "#ff8800" : "gray"} // Heart color based on favorite state
+                />
+              </button>
             </div>
             <h2 className="lg:text-[35px] font-normal text-[#363636] leading-9 w-[500px] mt-5">
               {product.description} {/* Display product description */}
             </h2>
           </div>
         </div>
+        <Reviews />
       </div>
     </div>
   );
