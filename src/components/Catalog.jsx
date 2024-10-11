@@ -24,76 +24,85 @@ const Catalog = () => {
 
   const location = useLocation();
   const selectedCategoryFromLink = location.state?.selectedCategory || null;
+  const searchResults = location.state?.searchResults || null; // Get search results from state
 
-  // Fetch all necessary data on component mount
+  // Fetch all necessary data on component mount if no search results are provided
   useEffect(() => {
-    const fetchData = async () => {
-      const token = localStorage.getItem("token");
+    if (!searchResults) {
+      const fetchData = async () => {
+        const token = localStorage.getItem("token");
 
-      try {
-        const [brandsResponse, materialsResponse, categoriesResponse] =
-          await Promise.all([
-            axios.get("https://api.bigbolts.ru/brand", {
-              headers: { Authorization: `Bearer ${token}` },
-            }),
-            axios.get("https://api.bigbolts.ru/material", {
-              headers: { Authorization: `Bearer ${token}` },
-            }),
-            axios.get("https://api.bigbolts.ru/category", {
-              headers: { Authorization: `Bearer ${token}` },
-            }),
-          ]);
+        try {
+          const [brandsResponse, materialsResponse, categoriesResponse] =
+            await Promise.all([
+              axios.get("https://api.bigbolts.ru/brand", {
+                headers: { Authorization: `Bearer ${token}` },
+              }),
+              axios.get("https://api.bigbolts.ru/material", {
+                headers: { Authorization: `Bearer ${token}` },
+              }),
+              axios.get("https://api.bigbolts.ru/category", {
+                headers: { Authorization: `Bearer ${token}` },
+              }),
+            ]);
 
-        setBrands(brandsResponse.data);
-        setMaterials(materialsResponse.data);
-        setCategories(categoriesResponse.data);
-        setLoading(false);
-      } catch (err) {
-        setError(err.message);
-        setLoading(false);
-      }
-    };
-
-    fetchData();
-  }, []);
-
-  // Fetch items when filters or selected category change
-  useEffect(() => {
-    const fetchFilteredItems = async () => {
-      const token = localStorage.getItem("token");
-      const payload = {
-        brands: selectedBrand ? [parseInt(selectedBrand)] : 0,
-        categories: selectedCategoryFromLink
-          ? [parseInt(selectedCategoryFromLink)]
-          : selectedCategory
-          ? [parseInt(selectedCategory)]
-          : 0,
-        materials: selectedMaterial ? [parseInt(selectedMaterial)] : 0,
-        min_price: minPrice,
-        max_price: maxPrice,
-        sellers: sellers.length > 0 ? sellers : 0,
+          setBrands(brandsResponse.data);
+          setMaterials(materialsResponse.data);
+          setCategories(categoriesResponse.data);
+          setLoading(false);
+        } catch (err) {
+          setError(err.message);
+          setLoading(false);
+        }
       };
 
-      try {
-        const response = await axios.post(
-          "https://api.bigbolts.ru/item",
-          payload,
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          }
-        );
-        setItems(response.data);
-      } catch (err) {
-        setError(err.message);
-      }
-    };
+      fetchData();
+    } else {
+      setItems(searchResults); // Use search results if they are provided
+      setLoading(false);
+    }
+  }, [searchResults]);
 
-    fetchFilteredItems();
+  // Fetch items when filters or selected category change, but not when there are search results
+  useEffect(() => {
+    if (!searchResults) {
+      const fetchFilteredItems = async () => {
+        const token = localStorage.getItem("token");
+        const payload = {
+          brands: selectedBrand ? [parseInt(selectedBrand)] : 0,
+          categories: selectedCategoryFromLink
+            ? [parseInt(selectedCategoryFromLink)]
+            : selectedCategory
+            ? [parseInt(selectedCategory)]
+            : 0,
+          materials: selectedMaterial ? [parseInt(selectedMaterial)] : 0,
+          min_price: minPrice,
+          max_price: maxPrice,
+          sellers: sellers.length > 0 ? sellers : 0,
+        };
+
+        try {
+          const response = await axios.post(
+            "https://api.bigbolts.ru/item",
+            payload,
+            {
+              headers: { Authorization: `Bearer ${token}` },
+            }
+          );
+          setItems(response.data);
+        } catch (err) {
+          setError(err.message);
+        }
+      };
+
+      fetchFilteredItems();
+    }
   }, [
     selectedBrand,
     selectedCategory,
     selectedMaterial,
     selectedCategoryFromLink,
+    searchResults, // Dependency to prevent data fetch when search results exist
   ]);
 
   // Handle changes in filters
