@@ -158,7 +158,7 @@ const ProductInfo = () => {
   }
 
   return (
-    <div className="bg-[#DFDFDF] pb-[150px]">
+    <div className="bg-[#DFDFDF] pb-[150px] overflow-x-hidden">
       <div className=" relative w-[87%] m-auto ">
         <div className="flex items-center text-[18px] pt-[4rem] mb-10">
           <span className="text-gray-400">Главная </span>
@@ -174,63 +174,65 @@ const ProductInfo = () => {
           {product.name}
         </div>
 
-        <div className="flex flex-col 2xl:flex-row gap-5">
-          <div className="flex flex-row 2xl:flex-col gap-3 2xl:gap-5 flex-wrap">
+        <div className="flex flex-col 2xl:flex-row gap-5 items-center">
+          <div className="flex flex-row 2xl:flex-col gap-3 2xl:gap-5 justify-center overflow-x-auto">
             <img
               src={product.image || "/WhiteBg.png"} // Use product image if available
               alt={product.name}
-              className="w-[120px] h-[120px] mn:w-[150px] mn:h-[150px] lg:w-[170px] lg:h-[170px] object-cover"
+              className="w-[100px] h-[100px] mn:w-[150px] mn:h-[150px] lg:w-[170px] lg:h-[170px] object-cover"
             />
             <img
               src={product.image || "/WhiteBg.png"} // Use product image if available
               alt={product.name}
-              className="w-[120px] h-[120px] mn:w-[150px] mn:h-[150px] lg:w-[170px] lg:h-[170px] object-cover"
+              className="w-[100px] h-[100px] mn:w-[150px] mn:h-[150px] lg:w-[170px] lg:h-[170px] object-cover"
             />
             <img
               src={product.image || "/WhiteBg.png"} // Use product image if available
               alt={product.name}
-              className="w-[120px] h-[120px] mn:w-[150px] mn:h-[150px] lg:w-[170px] lg:h-[170px] object-cover"
+              className="w-[100px] h-[100px] mn:w-[150px] mn:h-[150px] lg:w-[170px] lg:h-[170px] object-cover"
             />
             <img
               src={product.image || "/WhiteBg.png"} // Use product image if available
               alt={product.name}
-              className="w-[120px] h-[120px] mn:w-[150px] mn:h-[150px] lg:w-[170px] lg:h-[170px] object-cover"
+              className="w-[100px] h-[100px] mn:w-[150px] mn:h-[150px] lg:w-[170px] lg:h-[170px] object-cover"
             />
           </div>
           <img
             src={product.image || "/WhiteBg.png"} // Use product image if available
             alt={product.name}
-            className=" w-[300px] h-[300px]  mn:w-[600px] mn:h-[600px] sm:ml-[55px] mn:ml-[15px] lg:ml-[50px] object-cover 2xl:mt-[70px]"
+            className=" w-[300px] h-[300px] sm:w-[500px] sm:h-[500px]  mn:w-[600px] mn:h-[600px] object-cover "
           />
 
-          <div className="flex flex-col ml-10">
-            <h className="text-[#363636] text-3xl sm:text-3xl md:text-4xl lg:text-5xl font-bold md:mb-10">
+          <div className="flex flex-col text-center mn:text-left flex-wrap">
+            <h className="text-[#363636] text-3xl sm:text-4xl lg:text-5xl font-bold lg:mb-10 ">
               {product.name} {/* Display product name */}
             </h>
-            <div className="flex items-center gap-2 text-[#ff8800] text-xl lg:text-[35px] font-bold mb-5 md:mb-[60px]">
+            <div className="flex items-center gap-2 text-[#ff8800] text-xl lg:text-[35px] font-bold mb-5 md:mb-[60px] justify-center mn:justify-start">
               <div>{product.price}₽</div> {/* Display product price */}
               <div className="opacity-50">/1м²</div>
             </div>
-            <div className="flex gap-5">
-              <div className="flex items-center border-2 border-[#ffffff] w-full max-w-[180px] justify-around transition-colors hover:bg-gray-100">
-                <button
-                  className="text-[30px] mt-[-3px]"
-                  onClick={() => setQuantity(Math.max(quantity - 1, 1))} // Prevent going below 1
-                >
-                  -
-                </button>
-                <div className="text-[#363636] text-[27px] mt-[-2px]">
-                  {quantity}
+            <div className="flex gap-5 justify-center flex-col-reverse mn:flex-row">
+              <div className="flex justify-center">
+                <div className="flex items-center border-2 border-[#ffffff] w-[180px] justify-around transition-colors hover:bg-gray-100 ">
+                  <button
+                    className="text-[30px] mt-[-3px]"
+                    onClick={() => setQuantity(Math.max(quantity - 1, 1))} // Prevent going below 1
+                  >
+                    -
+                  </button>
+                  <div className="text-[#363636] text-[27px] mt-[-2px]">
+                    {quantity}
+                  </div>
+                  <button
+                    className="text-[30px] mt-[-3px]"
+                    onClick={() => setQuantity(quantity + 1)} // Increment quantity
+                  >
+                    +
+                  </button>
                 </div>
-                <button
-                  className="text-[30px] mt-[-3px]"
-                  onClick={() => setQuantity(quantity + 1)} // Increment quantity
-                >
-                  +
-                </button>
               </div>
               <button
-                className="w-full max-w-[180px] bg-[#ff8800] text-[#363636] text-[25px] font-normal py-1 self-center transition-colors hover:bg-[#ffb476]"
+                className="w-[180px] bg-[#ff8800] text-[#363636] text-[25px] font-normal py-1 self-center transition-colors hover:bg-[#ffb476]"
                 onClick={addToCart} // Add to cart functionality
               >
                 В корзину

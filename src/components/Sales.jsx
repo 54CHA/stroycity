@@ -178,7 +178,9 @@ const Sales = () => {
               {/* Item Details */}
               <div className="text-[#363636] text-2xl font-bold mb-2 transition-all hover:text-[#ff8800]">
                 <Link
-                  to={`product/${item.id}/${encodeURIComponent(item.name)}`}
+                  to={`catalog/product/${item.id}/${encodeURIComponent(
+                    item.name
+                  )}`}
                 >
                   {item.name}
                   {/* <br />

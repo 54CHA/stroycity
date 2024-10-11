@@ -120,11 +120,13 @@ const Catalog = () => {
 
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
+    window.scrollTo(0, 0);
   };
 
   const handleNextPage = () => {
     if (currentPage < totalPages) {
       setCurrentPage(currentPage + 1);
+      window.scrollTo(0, 0);
     }
   };
 
@@ -157,10 +159,10 @@ const Catalog = () => {
             {selectedCategoryFromLink == 12 && <h>Электрооборудование</h>}
           </div>
 
-          <div className="flex gap-5 mb-10">
+          <div className="flex gap-5 mb-10 whitespace-norma flex-wrap">
             <select
               name="brand"
-              className="p-1 flex shadow-md"
+              className="p-1 flex shadow-md l"
               onChange={handleBrandChange}
             >
               <option value="">Бренд</option>
@@ -207,12 +209,12 @@ const Catalog = () => {
               <ProductCard key={item.id} product={item} />
             ))}
           </div>
-          <div className="flex mt-20">
+          <div className="flex mt-20 justify-center">
             {Array.from({ length: totalPages }, (_, index) => (
               <button
                 key={index + 1}
                 onClick={() => handlePageChange(index + 1)}
-                className={`mx-1 px-[18px] py-1 rounded-full text-[20px] ${
+                className={`mx-[5px] px-[15px] sm:px-[17px] rounded-full text-[30px] sm:text-[20px] ${
                   currentPage === index + 1
                     ? "bg-[#ff8800] text-white"
                     : "bg-gray-200"
@@ -223,12 +225,12 @@ const Catalog = () => {
             ))}
             <button
               onClick={handleNextPage}
-              className={`mx-1 px-3 py-1 rounded text-[25px] ${
+              className={`mx-1 px-3 py-1 text-[25px] flex items-center gap-1 ${
                 currentPage < totalPages ? " text-[#ff8800]" : "opacity-30"
               }`}
               disabled={currentPage >= totalPages}
             >
-              Следующая страница{" "}
+              <span className="hidden sm:flex">Следующая страница </span>
               <FontAwesomeIcon
                 icon={faArrowRight}
                 className="translate-y-[2px]"

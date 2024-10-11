@@ -99,74 +99,76 @@ const CheckoutForm = () => {
   };
 
   return (
-    <div className="flex justify-between w-[90%] mx-auto my-10 py-10">
+    <div className="flex flex-col mn:flex-row justify-between w-[90%] mx-auto my-10 py-10">
       {/* Left section: Form */}
-      <div className="w-[60%]">
-        <h2 className="lg:text-5xl text-4xl font-bold mb-10">
+      <div className="w-[90%] mn:w-[60%]">
+        <h2 className="lg:text-5xl text-4xl font-bold mb-10 flex justify-center mn:justify-start">
           Оформление заявки
         </h2>
-        <form onSubmit={handleSubmit}>
-          <div className="mb-4">
-            <label className="block text-lg mb-2">Имя</label>
-            <input
-              type="text"
-              name="name"
-              value={formData.name}
-              onChange={handleInputChange}
-              className="w-full border border-gray-300 p-2"
-            />
-          </div>
-          <div className="mb-4">
-            <label className="block text-lg mb-2">Номер телефона</label>
-            <input
-              type="text"
-              name="phone"
-              value={formData.phone}
-              onChange={handleInputChange}
-              className="w-full border border-gray-300 p-2"
-            />
-          </div>
-          <div className="mb-4">
-            <label className="block text-lg mb-2">E-mail</label>
-            <input
-              type="email"
-              name="email"
-              value={formData.email}
-              onChange={handleInputChange}
-              className="w-full border border-gray-300 p-2"
-            />
-          </div>
-          <div className="mb-4">
-            <label className="block text-lg mb-2">Выбрать пункт выдачи</label>
-            <input
-              type="text"
-              name="pickupPoint"
-              value={formData.pickupPoint}
-              onChange={handleInputChange}
-              className="w-full border border-gray-300 p-2"
-            />
-          </div>
-          <div className="mb-4">
-            <label className="block text-lg mb-2">Комментарий к заказу</label>
-            <textarea
-              name="comment"
-              value={formData.comment}
-              onChange={handleInputChange}
-              className="w-full border border-gray-300 p-2"
-              rows="5"
-            />
-          </div>
-          <button
-            type="submit"
-            className="bg-orange-500 text-white py-3 px-6 text-lg mt-4"
-          >
-            Оформить заказ
-          </button>
-        </form>
+        <div className="">
+          <form onSubmit={handleSubmit}>
+            <div className="mb-4 ">
+              <label className="block text-lg mb-2">Имя</label>
+              <input
+                type="text"
+                name="name"
+                value={formData.name}
+                onChange={handleInputChange}
+                className="w-full border border-gray-300 p-2"
+              />
+            </div>
+            <div className="mb-4">
+              <label className="block text-lg mb-2">Номер телефона</label>
+              <input
+                type="text"
+                name="phone"
+                value={formData.phone}
+                onChange={handleInputChange}
+                className="w-full border border-gray-300 p-2"
+              />
+            </div>
+            <div className="mb-4">
+              <label className="block text-lg mb-2">E-mail</label>
+              <input
+                type="email"
+                name="email"
+                value={formData.email}
+                onChange={handleInputChange}
+                className="w-full border border-gray-300 p-2"
+              />
+            </div>
+            <div className="mb-4">
+              <label className="block text-lg mb-2">Выбрать пункт выдачи</label>
+              <input
+                type="text"
+                name="pickupPoint"
+                value={formData.pickupPoint}
+                onChange={handleInputChange}
+                className="w-full border border-gray-300 p-2"
+              />
+            </div>
+            <div className="mb-4">
+              <label className="block text-lg mb-2">Комментарий к заказу</label>
+              <textarea
+                name="comment"
+                value={formData.comment}
+                onChange={handleInputChange}
+                className="w-full border border-gray-300 p-2"
+                rows="5"
+              />
+            </div>
+            <button
+              type="submit"
+              className="bg-orange-500 text-white py-3 px-6 text-lg mt-4"
+            >
+              Оформить заказ
+            </button>
+          </form>
+        </div>
       </div>
 
       {/* Right section: Cart Summary */}
-      <div className="w-[35%] bg-white shadow-xl p-5">
+      <div className="w-[90%] mn:w-[60%] mt-10 mn:ml-5 mn:mt-0 bg-white shadow-xl p-5">
         {cartItems.length > 0 ? (
           cartItems.map((item) => (
             <div

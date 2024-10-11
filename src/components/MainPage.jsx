@@ -23,7 +23,7 @@ const MainPage = () => {
 
       <div className="relative h-[86vh] w-[87%] m-auto">
         <div className=" h-full left-0 top-0 absolute" />
-        <div className=" text-[#f9e6e4] text-[8vw] mn:text-[7vw] font-bold w-7/12 pt-20 mb-10 3xl:mb-0">
+        <div className=" text-[#f9e6e4] text-[8vw] mn:text-[6.5vw] font-bold w-7/12 pt-20 mb-[100px] 3xl:mb-0">
           КАЧЕСТВО, НАДЕЖНОСТЬ, ПРОФЕССИОНАЛИЗМ.
         </div>
         <Link
@@ -31,7 +31,8 @@ const MainPage = () => {
           className="  text-white  bg-[#FF8900] py-5 px-7 hover:bg-[#ff6a00] hover:scale-[1.01] transition-all duration-200
           3xl:ml-[40%] 3xl:text-[2vw]
           mn:text-[4vw]
-          m-auto text-[8vw]"
+          m-auto text-[8vw]
+          "
         >
           Открыть каталог
         </Link>

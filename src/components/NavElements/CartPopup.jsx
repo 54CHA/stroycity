@@ -82,7 +82,8 @@ const CartPopup = ({ isOpen, onClose, removeFromCart }) => {
     <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex justify-end">
       <div className="bg-white w-full lg:w-4/12 h-full p-6 overflow-y-auto">
         <div className="flex justify-between items-center mb-4">
-          <h2 className="text-2xl font-bold">Корзина</h2>
+          <h2 className="text-4xl font-bold mb-5">Корзина:</h2>
+
           <button
             onClick={onClose}
             className="text-gray-500 hover:text-gray-700"
@@ -90,6 +91,7 @@ const CartPopup = ({ isOpen, onClose, removeFromCart }) => {
             <FontAwesomeIcon icon={faTimes} className="size-[30px]" />
           </button>
         </div>
+        <hr className="my-4 mb-4" />
         {cartItems.length === 0 ? (
           <p>Ваша корзина пуста.</p>
         ) : (
@@ -108,8 +110,8 @@ const CartPopup = ({ isOpen, onClose, removeFromCart }) => {
                         <h3 className="font-semibold">{item.name}</h3>
                         <p className="text-gray-600">
                           {item.price} ₽ x {item.quantity}
-                          <br />
-                          id:{item.id}
+                          {/* <br />
+                          id:{item.id} */}
                         </p>
                       </div>
                     </div>
@@ -125,8 +127,13 @@ const CartPopup = ({ isOpen, onClose, removeFromCart }) => {
             </ul>
             <div className="mt-4 border-t pt-4">
               <p className="text-xl font-bold">Итого: {total} ₽</p>
-              <div className="mt-4 w-full bg-[#ff8800] text-white py-2 px-4 rounded hover:bg-[#ff6a00] transition-colors">
-                <Link to="/cart/checkout">Оформить заказ</Link>
+              <div className="mt-4">
+                <Link
+                  to="/cart/checkout"
+                  className="w-full bg-[#ff8800] text-white py-2 px-4 rounded hover:bg-[#ff6a00] transition-colors"
+                >
+                  Оформить заказ
+                </Link>
               </div>
             </div>
           </>

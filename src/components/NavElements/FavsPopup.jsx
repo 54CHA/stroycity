@@ -20,7 +20,7 @@ const FavsPopup = ({ isOpen, onClose }) => {
           ?.split("=")[1];
 
         if (!token) {
-          setError("Token not found");
+          setError("Нету товаров в избранных");
           setLoading(false);
           return;
         }
@@ -80,7 +80,7 @@ const FavsPopup = ({ isOpen, onClose }) => {
     <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex justify-end ">
       <div className="bg-white  w-full lg:w-4/12 h-full p-6 overflow-y-auto">
         <div className="flex justify-between items-center mb-4">
-          <h2 className="text-2xl font-bold">Избранное</h2>
+          <h2 className="text-4xl mb-5 font-bold">Избранное:</h2>
           <button
             onClick={onClose}
             className="text-gray-500 hover:text-gray-700"
@@ -88,7 +88,7 @@ const FavsPopup = ({ isOpen, onClose }) => {
             <FontAwesomeIcon icon={faTimes} className="text-[30px]" />
           </button>
         </div>
-
+        <hr className="my-4 mb-4" />
         {loading ? (
           <p>Loading favorites...</p>
         ) : error ? (
@@ -111,7 +111,9 @@ const FavsPopup = ({ isOpen, onClose }) => {
                 <div className="flex-grow">
                   <Link
                     className="hover:text-orange-500"
-                    to={`product/${item.id}/${encodeURIComponent(item.name)}`}
+                    to={`/catalog/product/${item.id}/${encodeURIComponent(
+                      item.name
+                    )}`}
                   >
                     <h3 className="font-semibold text-lg">{item.name}</h3>
                   </Link>

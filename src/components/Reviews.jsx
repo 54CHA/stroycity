@@ -32,13 +32,13 @@ const ReviewsComponent = () => {
     },
   ];
 
-  const totalRating = "5.0";
+  const totalRating = "5";
   const totalReviews = 101;
 
   return (
     <div className="reviews-section">
       {/* Overall Rating */}
-      <div className="rating-summary flex items-center mb-4 mt-20">
+      <div className="rating-summary flex items-center mb-4 mt-20 justify-center mn:justify-start">
         <h2 className="text-5xl font-bold">{totalRating}</h2>
         <div className="ml-4 flex items-center">
           {[...Array(5)].map((_, index) => (
@@ -53,7 +53,7 @@ const ReviewsComponent = () => {
       </div>
 
       {/* Carousel */}
-      <div className="review-carousel flex items-center mb-8">
+      <div className="review-carousel flex items-center mb-8 flex-wrap justify-center mn:justify-start">
         {/* Placeholder for review images */}
         <div className="flex space-x-4">
           {[...Array(window.innerWidth < 768 ? 3 : 5)].map(
@@ -71,14 +71,17 @@ const ReviewsComponent = () => {
         </div>
         {/* Next arrow */}
         <div className="ml-4">
-          <button className="p-3 px-[15px] bg-orange-500 rounded-full text-white">
-            <FontAwesomeIcon icon={faArrowRight} className="text-2xl" />
+          <button className="p-3 px-[15px] bg-orange-500 hover:bg-orange-600 transition-all rounded-full text-white mt-5 mn:mt-0">
+            <FontAwesomeIcon
+              icon={faArrowRight}
+              className="text-2xl translate-y-[2px]"
+            />
           </button>
         </div>
       </div>
 
       {/* Reviews */}
-      <div className="reviews-grid grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div className="reviews-grid grid grid-cols-1 md:grid-cols-3 gap-4 ">
         {reviews.map((review) => (
           <div key={review.id} className="review-card p-4 bg-white shadow-md">
             <div className="flex justify-between items-center mb-2">

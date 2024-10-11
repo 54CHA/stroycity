@@ -65,7 +65,6 @@ const Navbar = () => {
 
   return (
     <div>
-      {" "}
       <nav className="mn:hidden bg-white shadow-lg relative">
         <div className="flex justify-between items-center p-4">
           <Link to="/">
