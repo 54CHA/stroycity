@@ -13,7 +13,7 @@ import { Link } from "react-router-dom";
 import SearchBar from "./NavElements/SearchBar";
 import FavsPopup from "./NavElements/FavsPopup";
 import CartPopup from "./NavElements/CartPopup";
-
+import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 const Navbar = () => {
@@ -24,6 +24,8 @@ const Navbar = () => {
   const [isCartPopupOpen, setIsCartPopupOpen] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [cartItems, setCartItems] = useState([]); // This should be managed by a global state or fetched from an API
+  const [totalQuantity, setItemQuantity] = useState(0);
+  const [totalFavsQuantity, setFavsQuantity] = useState(0);
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -61,6 +63,69 @@ const Navbar = () => {
         tawkScript.remove();
       }
     };
+  }, []);
+
+  const fetchFavsQuantity = async () => {
+    try {
+      // Extract the JWT token from cookies
+      const token = document.cookie
+        .split("; ")
+        .find((row) => row.startsWith("jwt="))
+        ?.split("=")[1];
+
+      const apiUrl = "https://api.bigbolts.ru";
+
+      // Make the API request to get the buyer's information
+      const response = await axios.get(apiUrl + "/buyer", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (response.status === 200 && response.data.favorites) {
+        const totalFavsQuantity = response.data.favorites.length;
+
+        setFavsQuantity(totalFavsQuantity);
+      }
+    } catch (error) {
+      console.error("Error fetching favorite items quantity", error);
+    }
+  };
+
+  const fetchCartQuantity = async () => {
+    try {
+      const token = document.cookie
+        .split("; ")
+        .find((row) => row.startsWith("jwt="))
+        ?.split("=")[1];
+
+      const apiUrl = "https://api.bigbolts.ru";
+
+      const response = await axios.get(apiUrl + "/buyer/cart", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (
+        response.status === 200 &&
+        response.data.items &&
+        response.data.items.length > 0
+      ) {
+        // Updated condition
+        // Assuming the response is an array with one object containing "items"
+        const totalQuantity = response.data.items.length;
+
+        // Update state with the total quantity
+        setItemQuantity(totalQuantity);
+      }
+    } catch (error) {
+      console.error("Error fetching cart quantity", error);
+    }
+  };
+  useEffect(() => {
+    fetchCartQuantity();
+    fetchFavsQuantity();
   }, []);
 
   return (
@@ -127,6 +192,17 @@ const Navbar = () => {
               className="hover:text-[#ff8800] transition-all text-xl"
               onClick={() => setIsFavsPopupOpen(true)}
             />
+            {totalFavsQuantity > 0 && (
+              <>
+                {/* <div className="w-4 h-4 rounded-full bg-[#FF8900] absolute top-2 left-[10px]"></div> */}
+                <div
+                  className="text-[12px] absolute top-[6px] left-[12px] bg-[#FF8900] rounded-full px-[6px]"
+                  onClick={() => setIsFavsPopupOpen(true)}
+                >
+                  {totalFavsQuantity}
+                </div>
+              </>
+            )}
             {/* <div className="w-4 h-4 rounded-full bg-[#FF8900] absolute top-0 right-0 text-xs text-white flex items-center justify-center">
               {favoriteItems.length}
             </div> */}
@@ -137,6 +213,16 @@ const Navbar = () => {
               className="hover:text-[#ff8800] transition-all text-xl"
               onClick={() => setIsCartPopupOpen(true)}
             />
+            {totalQuantity > 0 && (
+              <>
+                <div
+                  className="text-[12px] absolute top-[6px] left-[12px] bg-[#FF8900] rounded-full px-[6px]"
+                  onClick={() => setIsCartPopupOpen(true)}
+                >
+                  {totalQuantity}
+                </div>
+              </>
+            )}
             {/* <div className="w-4 h-4 rounded-full bg-[#FF8900] absolute top-0 right-0 text-xs text-white flex items-center justify-center">
               {cartItems.length}
             </div> */}
@@ -232,7 +318,10 @@ const Navbar = () => {
                       </h>
                     </div>
                   )}
-                  <div className="text-[#ff8800] text-[18px] sm:text-[25px] font-bold pr-10 pl-5 h-full flex items-center">
+                  <div
+                    className="text-[#ff8800] text-[18px] sm:text-[25px] font-bold pr-10 pl-5 h-full flex items-center"
+                    onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                  >
                     Каталог товаров
                   </div>
                 </div>
@@ -277,10 +366,20 @@ const Navbar = () => {
                     className="size-[20px] border-l border-[#cacaca] h-[100px] px-10 hover:text-[#ff8800] transition duration-300 cursor-pointer"
                     onClick={() => setIsFavsPopupOpen(true)}
                   />
-                  <div className="w-4 h-4 rounded-full bg-[#FF8900] absolute top-12 left-[52px]"></div>
-                  <div className="text-[13px] absolute top-[46px] left-[56.5px]">
-                    {favoriteItems.length}
-                  </div>
+                  {totalFavsQuantity > 0 && (
+                    <>
+                      <div
+                        className="w-4 h-4 rounded-full bg-[#FF8900] absolute top-12 left-[52px]"
+                        onClick={() => setIsFavsPopupOpen(true)}
+                      ></div>
+                      <div
+                        className="text-[13px] absolute top-[46px] left-[56.5px]"
+                        onClick={() => setIsFavsPopupOpen(true)}
+                      >
+                        {totalFavsQuantity}
+                      </div>
+                    </>
+                  )}
                 </div>
                 <div className="relative">
                   <FontAwesomeIcon
@@ -288,10 +387,20 @@ const Navbar = () => {
                     className="size-[20px] border-l border-[#cacaca] h-[100px] px-10 hover:text-[#ff8800] transition duration-300 cursor-pointer"
                     onClick={() => setIsCartPopupOpen(true)}
                   />
-                  <div className="w-4 h-4 rounded-full bg-[#FF8900] absolute top-12 left-[52px]"></div>
-                  <div className="text-[13px] absolute top-[46px] left-[56.5px]">
-                    {cartItems.length}
-                  </div>
+                  {totalQuantity > 0 && (
+                    <>
+                      <div
+                        className="w-4 h-4 rounded-full bg-[#FF8900] absolute top-12 left-[52px]"
+                        onClick={() => setIsCartPopupOpen(true)}
+                      ></div>
+                      <div
+                        className="text-[13px] absolute top-[46px] left-[56.5px]"
+                        onClick={() => setIsCartPopupOpen(true)}
+                      >
+                        {totalQuantity}
+                      </div>
+                    </>
+                  )}
                 </div>
                 <Link to="/user">
                   <FontAwesomeIcon

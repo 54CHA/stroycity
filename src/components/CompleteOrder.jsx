@@ -99,7 +99,7 @@ const CheckoutForm = () => {
   };
 
   return (
-    <div className="flex flex-col mn:flex-row justify-between w-[90%] mx-auto my-10 py-10">
+    <div className="flex flex-col mn:flex-row justify-center mb:ml-[5%] ml-[9%] mx-auto my-10 py-10">
       {/* Left section: Form */}
       <div className="w-[90%] mn:w-[60%]">
         <h2 className="lg:text-5xl text-4xl font-bold mb-10 flex justify-center mn:justify-start">

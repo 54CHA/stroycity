@@ -4,8 +4,13 @@ import { useNavigate } from "react-router-dom";
 const Footer = () => {
   const navigate = useNavigate();
 
+  const handleNextPage = () => {
+    window.scrollTo(0, 0);
+  };
+
   const handleCategoryClick = (categoryId) => {
     navigate("/catalog", { state: { selectedCategory: categoryId } });
+    window.scrollTo(0, 0);
   };
   return (
     <footer className=" w-[87%] m-auto transition-all">
@@ -13,17 +18,23 @@ const Footer = () => {
         <div className="flex-col">
           <b className="text-black">Покупателям </b>
           <p className="hover:text-gray-600">
-            <Link to="/FAQ">Вопросы и ответы</Link>
+            <Link to="/FAQ" onClick={handleNextPage}>
+              Вопросы и ответы
+            </Link>
           </p>
           <br />
           <b className="text-black">Продавцам </b>
           <p className="hover:text-gray-600">
-            <Link to="">Стать продавцом</Link>
+            <Link to="" onClick={handleNextPage}>
+              Стать продавцом
+            </Link>
           </p>
           <br />
           <b className="text-black">Курьерам </b>
           <p className="hover:text-gray-600">
-            <Link to="">Стать курьером</Link>
+            <Link to="" onClick={handleNextPage}>
+              Стать курьером
+            </Link>
           </p>
         </div>
         <div className="flex-col"></div>
@@ -45,10 +56,14 @@ const Footer = () => {
         <div className="flex-col">
           <b className="text-black">Популярные разделы</b>
           <p className="hover:text-gray-600">
-            <Link to="/about">О компании</Link>
+            <Link to="/about" onClick={handleNextPage}>
+              О компании
+            </Link>
           </p>
           <p className="hover:text-gray-600">
-            <Link to="/DeliveryAndPayment">Оплата и доставка</Link>
+            <Link to="/DeliveryAndPayment" onClick={handleNextPage}>
+              Оплата и доставка
+            </Link>
           </p>
         </div>
         <div className="flex-col">

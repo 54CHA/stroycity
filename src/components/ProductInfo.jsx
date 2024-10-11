@@ -4,8 +4,9 @@ import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRight, faHeart } from "@fortawesome/free-solid-svg-icons";
 import Reviews from "./Reviews";
+
 const ProductInfo = () => {
-  const { id, name } = useParams(); // Get the id and name from URL parameters
+  const { id } = useParams(); // Get the id from URL parameters
   const [product, setProduct] = useState(null);
   const [quantity, setQuantity] = useState(1); // Add state for quantity
   const [isFavorite, setIsFavorite] = useState(false); // State for favorite status
@@ -56,12 +57,10 @@ const ProductInfo = () => {
           },
         });
 
-        if (
-          response.data.favorites &&
-          response.data.favorites.some((favItem) => favItem.id === id)
-        ) {
-          setIsFavorite(true); // Set state to true if it's already in favorites
-        }
+        const isFav = response.data.favorites.some(
+          (favorite) => favorite.id === parseInt(id) // Check if the product is in the favorites list
+        );
+        setIsFavorite(isFav);
       } catch (error) {
         console.error("Error checking favorite status:", error);
       }
@@ -159,18 +158,12 @@ const ProductInfo = () => {
 
   return (
     <div className="bg-[#DFDFDF] pb-[150px] overflow-x-hidden">
-      <div className=" relative w-[87%] m-auto ">
+      <div className="relative w-[87%] m-auto">
         <div className="flex items-center text-[18px] pt-[4rem] mb-10">
           <span className="text-gray-400">Главная </span>
-          <FontAwesomeIcon
-            icon={faArrowRight}
-            className="text-gray-400 mx-1"
-          />{" "}
+          <FontAwesomeIcon icon={faArrowRight} className="text-gray-400 mx-1" />{" "}
           <span className="text-gray-400">Каталог товаров </span>
-          <FontAwesomeIcon
-            icon={faArrowRight}
-            className="text-gray-400 mx-1"
-          />{" "}
+          <FontAwesomeIcon icon={faArrowRight} className="text-gray-400 mx-1" />{" "}
           {product.name}
         </div>
 
@@ -200,11 +193,11 @@ const ProductInfo = () => {
           <img
             src={product.image || "/WhiteBg.png"} // Use product image if available
             alt={product.name}
-            className=" w-[300px] h-[300px] sm:w-[500px] sm:h-[500px]  mn:w-[600px] mn:h-[600px] object-cover "
+            className="w-[300px] h-[300px] sm:w-[500px] sm:h-[500px] mn:w-[600px] mn:h-[600px] object-cover"
           />
 
           <div className="flex flex-col text-center mn:text-left flex-wrap">
-            <h className="text-[#363636] text-3xl sm:text-4xl lg:text-5xl font-bold lg:mb-10 ">
+            <h className="text-[#363636] text-3xl sm:text-4xl lg:text-5xl font-bold lg:mb-10">
               {product.name} {/* Display product name */}
             </h>
             <div className="flex items-center gap-2 text-[#ff8800] text-xl lg:text-[35px] font-bold mb-5 md:mb-[60px] justify-center mn:justify-start">
@@ -213,7 +206,7 @@ const ProductInfo = () => {
             </div>
             <div className="flex gap-5 justify-center flex-col-reverse mn:flex-row">
               <div className="flex justify-center">
-                <div className="flex items-center border-2 border-[#ffffff] w-[180px] justify-around transition-colors hover:bg-gray-100 ">
+                <div className="flex items-center border-2 border-[#ffffff] w-[180px] justify-around transition-colors hover:bg-gray-100">
                   <button
                     className="text-[30px] mt-[-3px]"
                     onClick={() => setQuantity(Math.max(quantity - 1, 1))} // Prevent going below 1

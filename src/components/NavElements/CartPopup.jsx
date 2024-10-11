@@ -107,7 +107,14 @@ const CartPopup = ({ isOpen, onClose, removeFromCart }) => {
                         className="w-16 h-16 object-cover mr-4"
                       />
                       <div>
-                        <h3 className="font-semibold">{item.name}</h3>
+                        <Link
+                          className="hover:text-orange-500"
+                          to={`/catalog/product/${item.id}/${encodeURIComponent(
+                            item.name
+                          )}`}
+                        >
+                          <h3 className="font-semibold">{item.name}</h3>
+                        </Link>
                         <p className="text-gray-600">
                           {item.price} ₽ x {item.quantity}
                           {/* <br />
