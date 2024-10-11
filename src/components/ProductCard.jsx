@@ -148,8 +148,8 @@ const ProductCard = ({ product }) => {
           {" "}
           {/* Updated to use product name in URL */} {/* Added hover effect */}
           {product.name}
-          <br />
-          id: {product.id}
+          {/* <br />
+          id: {product.id} */}
         </Link>
       </div>
       <div className="text-base lg:text-[25px] font-normal text-[#363636] leading-relaxed mb-4">

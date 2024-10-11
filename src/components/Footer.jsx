@@ -1,6 +1,12 @@
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const Footer = () => {
+  const navigate = useNavigate();
+
+  const handleCategoryClick = (categoryId) => {
+    navigate("/catalog", { state: { selectedCategory: categoryId } });
+  };
   return (
     <footer className=" w-[87%] m-auto transition-all">
       <div className=" justify-between mt-20 mb-20 lg:text-[25px] font-thin text-gray-400 hidden mn:text-[18px] mn:flex">
@@ -23,15 +29,27 @@ const Footer = () => {
         <div className="flex-col"></div>
         <div className="flex-col">
           <b className="text-black">Каталог товаров</b>
-          <p className="hover:text-gray-600"><Link to="">Материалы</Link></p>
-          <p className="hover:text-gray-600"><Link to="">Инструменты</Link></p>
-          <p className="hover:text-gray-600"><Link to="">Сантехника</Link></p>
-          <p className="hover:text-gray-600"><Link to="">Электрооборудование</Link></p>
+          <p className="hover:text-gray-600">
+            <h onClick={() => handleCategoryClick("9")}>Материалы</h>
+          </p>
+          <p className="hover:text-gray-600">
+            <h onClick={() => handleCategoryClick("10")}>Инструменты</h>
+          </p>
+          <p className="hover:text-gray-600">
+            <h onClick={() => handleCategoryClick("11")}>Сантехника</h>
+          </p>
+          <p className="hover:text-gray-600">
+            <h onClick={() => handleCategoryClick("12")}>Электрооборудование</h>
+          </p>
         </div>
         <div className="flex-col">
           <b className="text-black">Популярные разделы</b>
-          <p className="hover:text-gray-600"><Link to="">О компании</Link></p>
-          <p className="hover:text-gray-600"><Link to="">Оплата и доставка</Link></p>
+          <p className="hover:text-gray-600">
+            <Link to="/about">О компании</Link>
+          </p>
+          <p className="hover:text-gray-600">
+            <Link to="/DeliveryAndPayment">Оплата и доставка</Link>
+          </p>
         </div>
         <div className="flex-col">
           <b className="text-black">Наши контакты</b>

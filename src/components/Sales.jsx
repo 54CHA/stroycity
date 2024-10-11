@@ -160,7 +160,7 @@ const Sales = () => {
                 } // Added check for images
                 alt={item.name}
                 className="w-full h-64 object-cover mb-4" // Change h-64 to h-64 to make it square
-                style={{ height: 'auto', aspectRatio: '1 / 1' }} // Added style for square aspect ratio
+                style={{ height: "auto", aspectRatio: "1 / 1" }} // Added style for square aspect ratio
               />
 
               {/* Favorite Button */}
@@ -181,8 +181,8 @@ const Sales = () => {
                   to={`product/${item.id}/${encodeURIComponent(item.name)}`}
                 >
                   {item.name}
-                  <br />
-                  id: {item.id}
+                  {/* <br />
+                  id: {item.id} */}
                 </Link>
               </div>
               <div className="text-lg text-gray-500 mb-4">

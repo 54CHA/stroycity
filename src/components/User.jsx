@@ -57,22 +57,22 @@ const User = () => {
   return (
     <div className="bg-[#DFDFDF] ">
       <div className="w-[87%] m-auto py-20 text-[25px]">
-        <div className="w-[47%] h-[400px] bg-white p-6 flex flex-col justify-between">
-          <div className="flex">
+        <div className="w-full lg:w-[47%] h-[400px] bg-white p-6 flex flex-col justify-between">
+          <div className="flex flex-col m-auto mn:m-0  mn:ml-5">
             <img
               src="/avatar.png"
               alt="Аватар"
-              className="bg-[#DFDFDF] p-3 rounded-full"
+              className="bg-[#DFDFDF] p-3 rounded-full size-[170px]"
             />
             <div className="flex w-full justify-between">
-              <h1 className="font-bold">
+              <h1 className="font-bold m-auto mn:m-0">
                 {userInfo ? userInfo.name : "Loading..."}
               </h1>
               {/* <FontAwesomeIcon icon={faBell} className="text-[#ff8800] mt-2" /> */}
             </div>
           </div>
-          <div className="flex justify-between items-center px-4">
-            <h1 className="text-[#6a6a6a] font-medium">
+          <div className="flex flex-col mn:flex-row justify-between items-center px-4">
+            <h1 className="text-[#6a6a6a] font-medium text-[20px] mn:text-[25px]">
               Почта:
               <br />
               <span className="text-black font-medium">
@@ -80,20 +80,20 @@ const User = () => {
               </span>
             </h1>
             <button
-              className="underline text-[#6a6a6a] hover:text-[#ff8800] transition-all font-medium"
+              className="underline text-[#6a6a6a] hover:text-[#ff8800] transition-all font-medium "
               onClick={deleteToken}
             >
               Выйти
             </button>
           </div>
         </div>
-        <div className="flex gap-10">
-          <div className="w-[41%] h-[300px] bg-white p-6 flex flex-col justify-between mt-10">
+        <div className="flex-col lg:flex-row flex gap-10">
+          <div className="w-full lg:w-[41%] h-[300px] bg-white p-6 flex flex-col justify-between mt-10">
             <div className="flex">
               <h1 className="font-bold">Избранное</h1>
             </div>
           </div>
-          <div className="w-[41%] h-[300px] bg-white p-6 flex flex-col justify-between mt-10">
+          <div className="w-full lg:w-[41%] h-[300px] bg-white p-6 flex flex-col justify-between mt-10">
             <div className="flex">
               <h1 className="font-bold">История заказов</h1>
             </div>

@@ -114,7 +114,14 @@ const Navbar = () => {
           <FontAwesomeIcon
             icon={faMagnifyingGlass}
             className="hover:text-[#ff8800] transition-all text-xl"
+            onClick={() => setIsSearchBarOpen(!isSearchBarOpen)}
           />
+          {isSearchBarOpen && (
+            <div className="absolute top-full right-0 w-full bg-white border border-[#cacaca] p-4 z-10">
+              <SearchBar onClose={() => setIsSearchBarOpen(false)} />
+            </div>
+          )}
+
           <div className="relative">
             <FontAwesomeIcon
               icon={faHeart}

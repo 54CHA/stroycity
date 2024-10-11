@@ -43,7 +43,7 @@ const SearchBar = ({ onClose }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="relative w-6/12 m-auto">
+    <form onSubmit={handleSubmit} className="relative w-10/12 mn:w-8/12 lg:w-6/12 m-auto">
       <input
         type="text"
         value={searchTerm}
